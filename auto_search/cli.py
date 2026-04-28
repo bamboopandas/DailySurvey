@@ -8,6 +8,7 @@ from typing import Any, Dict, Optional
 from .brief import scaffold_brief
 from .config import DEFAULT_DOCS_DIR, DEFAULT_RUNS_DIR, DEFAULT_STATE_DIR, load_dotenv, read_json
 from .feishu import send_card, send_text
+from .monthly import prepare_monthly_input
 from .pipeline import candidates_by_id, collect_candidates, mark_seen_from_brief
 from .publish import publish_pages
 from .render import render_outputs
@@ -28,6 +29,10 @@ def main(argv: Optional[list] = None) -> int:
     scaffold_parser = subparsers.add_parser("scaffold-brief", help="create a fallback brief for dry-run")
     scaffold_parser.add_argument("candidates", type=Path)
     scaffold_parser.add_argument("--output", type=Path)
+
+    monthly_parser = subparsers.add_parser("prepare-monthly", help="prepare monthly input for Codex")
+    monthly_parser.add_argument("--month", default=None, help="target month in YYYY-MM; defaults to previous month")
+    monthly_parser.add_argument("--runs-dir", type=Path, default=DEFAULT_RUNS_DIR)
 
     render_parser = subparsers.add_parser("render", help="render HTML report and Feishu card")
     render_parser.add_argument("brief", type=Path)
@@ -73,6 +78,11 @@ def main(argv: Optional[list] = None) -> int:
     if args.command == "scaffold-brief":
         output = args.output or args.candidates.parent / "brief.json"
         scaffold_brief(args.candidates, output)
+        print(f"wrote {output}")
+        return 0
+
+    if args.command == "prepare-monthly":
+        output = prepare_monthly_input(args.month, runs_dir=args.runs_dir)
         print(f"wrote {output}")
         return 0
 

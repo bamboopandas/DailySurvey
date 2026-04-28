@@ -239,15 +239,16 @@ def codex_brief_instructions() -> Dict[str, Any]:
         "output_file": "brief.json",
         "language": "zh-CN",
         "schema": {
+            "report_type": "daily",
             "date": "YYYY-MM-DD",
             "title": "每日 AI / 推荐系统情报简报",
-            "page_summary": "3-6 sentence overall summary in Chinese",
+            "page_summary": "A concise newspaper-style lead and nut graf in Chinese: what happened, why it matters, and what to watch. Do not call it a trend unless there is clear multi-day evidence.",
             "sections": [
                 {
                     "id": "one of recsys_research,llm_hotspots,data_centric_ai,ai_social_tools",
                     "title": "Chinese section title",
-                    "trend_summary": "A fuller Chinese trend brief. Prefer recall over brevity.",
-                    "trend_bullets": ["3-6 concise bullets"],
+                    "section_summary": "A reported section brief in Chinese: the main news angle, evidence coverage, and why it matters today.",
+                    "news_bullets": ["3-5 concise reported facts or implications, not vague trend claims"],
                     "cards": [
                         {
                             "candidate_id": "must match a candidate id",
@@ -263,12 +264,14 @@ def codex_brief_instructions() -> Dict[str, Any]:
             ],
         },
         "selection_policy": [
-            "Write an overall narrative page_summary that synthesizes cross-section trends, source coverage, notable gaps, and why today's items matter.",
+            "Write like a newspaper technology reporter: start with the concrete news angle, then explain context and consequences.",
+            "Daily reports should not force trend language. Use 'today's signal' or 'what changed' unless there is evidence across multiple days.",
+            "Write an overall narrative page_summary that synthesizes the day's strongest news, source coverage, notable gaps, and why today's items matter.",
             "Use candidates_by_section as the primary evidence; do not invent papers, URLs, authors, scores, or sources.",
             "If a section has fewer than five credible candidates, use the Codex app's own web/search capability to supplement from public sources, and mark candidate_id as manual:<stable-slug>.",
             "Every manual supplement must include real title, URL, and citations from the pages you inspected.",
             "Each section should include exactly five cards when at least five eligible candidates exist.",
-            "Trend summaries may mention more than five items, but every concrete claim should be grounded in candidate evidence.",
+            "Section summaries may mention more than five items, but every concrete claim should be grounded in candidate evidence.",
             "Prioritize a blend of paper quality, discussion heat, recommender-system relevance, and practical tool/product value.",
             "For LLM, data-centric AI, and tools, explicitly explain potential implications for recommender systems.",
         ],

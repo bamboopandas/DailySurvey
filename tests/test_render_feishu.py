@@ -4,7 +4,7 @@ from pathlib import Path
 
 from auto_search.config import write_json
 from auto_search.feishu import sign
-from auto_search.render import build_feishu_card, render_outputs
+from auto_search.render import build_feishu_card, render_outputs, report_public_url
 from auto_search.schema import candidate
 
 
@@ -55,7 +55,12 @@ class RenderFeishuTest(unittest.TestCase):
         self.assertEqual(sign("123", "secret"), sign("123", "secret"))
         self.assertNotEqual(sign("123", "secret"), sign("124", "secret"))
 
+    def test_monthly_report_url_uses_monthly_path(self):
+        self.assertEqual(
+            report_public_url("2026-04", "monthly"),
+            "docs/monthly/2026-04/index.html",
+        )
+
 
 if __name__ == "__main__":
     unittest.main()
-

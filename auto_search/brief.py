@@ -10,6 +10,7 @@ from .schema import SECTIONS
 def scaffold_brief(candidates_path: Path, output_path: Path) -> Dict[str, Any]:
     data = read_json(candidates_path)
     brief = {
+        "report_type": "daily",
         "date": data.get("date"),
         "title": "每日 AI / 推荐系统情报简报",
         "_fallback_brief": True,
@@ -23,6 +24,8 @@ def scaffold_brief(candidates_path: Path, output_path: Path) -> Dict[str, Any]:
             {
                 "id": section_id,
                 "title": title,
+                "section_summary": fallback_trend(title, candidates),
+                "news_bullets": fallback_bullets(candidates),
                 "trend_summary": fallback_trend(title, candidates),
                 "trend_bullets": fallback_bullets(candidates),
                 "cards": [fallback_card(item) for item in candidates],
