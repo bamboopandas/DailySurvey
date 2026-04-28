@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>每日 AI / 推荐系统情报简报 - 2026-04-28</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f7f8fa;
+      --panel: #ffffff;
+      --text: #15171a;
+      --muted: #5f6875;
+      --line: #dfe4ea;
+      --accent: #0f766e;
+    }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    main {
+      max-width: 1040px;
+      margin: 0 auto;
+      padding: 40px 20px 72px;
+    }
+    header {
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 28px;
+      padding-bottom: 24px;
+    }
+    h1 {
+      font-size: clamp(28px, 4vw, 44px);
+      line-height: 1.18;
+      margin: 0 0 8px;
+    }
+    .date, .muted {
+      color: var(--muted);
+    }
+    section {
+      margin-top: 28px;
+      padding-top: 8px;
+    }
+    h2 {
+      font-size: 24px;
+      margin: 0 0 12px;
+    }
+    .trend {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 18px 20px;
+    }
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 14px;
+      margin-top: 16px;
+    }
+    article {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 16px;
+    }
+    h3 {
+      font-size: 17px;
+      line-height: 1.35;
+      margin: 0 0 10px;
+    }
+    a {
+      color: var(--accent);
+      text-decoration-thickness: .08em;
+      text-underline-offset: .18em;
+    }
+    ul {
+      padding-left: 1.2em;
+    }
+    .label {
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <h1>每日 AI / 推荐系统情报简报</h1>
+      <div class="date">2026-04-28</div>
+      <p>今天的信息流呈现出三条主线：推荐系统侧继续向“生成式序列建模 + LLM 用户模拟 + 安全鲁棒性”收敛，LLM 侧的热点集中在 agent 探索、过程奖励、多源证据融合和高效推理，Data-centric AI 则从单纯数据扩增转向评测重建、解释质量排序和合成数据工具化。工具/产品侧已经不只是聊天应用，而是围绕 RAG、agent workflow、LLM observability 和生产化编排形成工程栈。对推荐系统研究的启发是：下一阶段值得把用户行为序列、推荐解释、离线评测、agent 数据分析和生产化 RAG 工具放到同一个闭环里看，而不是把论文方法和工程平台分开处理。本次候选来自 arXiv、OpenReview、GitHub、RSS/公开网页与 Hacker News 类公开源；Semantic Scholar 因未配置 API key 被跳过，部分 RSS 源不可用，自动化已允许在候选不足时由本 app 内的 gpt-5.5 继续搜索公开来源补充。</p>
+    </header>
+    <section id="recsys_research">
+  <h2>推荐系统研究动态</h2>
+  <div class="trend"><p>推荐系统板块今天最明显的趋势是：LLM 不再只是作为文本特征或重排序器出现，而是在行为理解、用户模拟、生成式多行为预测和攻击面建模中成为核心组件。行为序列建模方面，有工作把日常生活节律视为可理解、可生成的序列，直接连接个人助手和推荐引擎；多行为推荐方面，生成式模型开始显式建模行为强度与转移，而不是只把点击、收藏、购买当成离散事件。另一个值得注意的方向是评测与安全：LLM 多智能体被用于模拟用户对多样性的探索偏好，同时 LLM-based sequential recommender 也暴露出 prompt-unknown promotion attack 这类新的操纵风险。CTR 侧的 Similar Users-Augmented Interest Network 则提醒我们，近邻用户信息与长序列兴趣表达仍然是工业推荐里非常现实的增益来源。</p><ul><li>生成式推荐正在从 next-item prediction 扩展到多行为强度、行为转移和长期意图建模。</li><li>LLM 用户模拟开始进入多样性、探索性和个性差异评测，但也需要防止模拟偏差替代真实用户证据。</li><li>LLM-SRS 的安全风险开始具体化，prompt 不可见场景下的 promotion attack 对广告和内容分发尤其敏感。</li><li>CTR 和序列推荐仍然需要吸收相似用户、群体行为和上下文节律，而不是只追求大模型端到端。</li><li>对后续研究最有价值的切入点是：把行为序列生成、用户模拟、鲁棒攻击和可解释评测组合成统一 benchmark。</li></ul></div>
+  <div class="cards"><article>
+  <h3><a href="https://arxiv.org/abs/2604.23578v1" target="_blank" rel="noopener noreferrer">LLMs Reading the Rhythms of Daily Life: Aligned Understanding for Behavior Prediction and Generation</a></h3>
+  <p>这篇工作把日常行为看作由意图、偏好和上下文共同塑造的复杂序列，并研究 LLM 如何理解和生成这类行为。它把个人助手、行为预测和推荐引擎放在同一类问题下讨论。</p>
+  <p><strong>为什么值得看：</strong>如果 LLM 能稳定理解日常行为节律，推荐系统就可以从单纯 item interaction 转向更宽的生活上下文建模。</p>
+  <p><strong>对推荐系统的启发：</strong>可以考虑把用户历史行为拆成“节律、任务、偏好漂移、场景”几个层级，用于下一代序列推荐和长期用户模拟。</p>
+  <div class="label">引用：<a href="https://arxiv.org/abs/2604.23578v1" target="_blank" rel="noopener noreferrer">arXiv</a></div>
+</article>
+<article>
+  <h3><a href="https://arxiv.org/abs/2604.24472v1" target="_blank" rel="noopener noreferrer">Modeling Behavioral Intensity and Transitions for Generative Recommendation</a></h3>
+  <p>该文面向多行为推荐，强调不同行为类型承载不同意图信号，并用生成式序列建模刻画行为强度和行为转移。它关注的不只是下一次交互是什么，还包括用户如何从弱意图走向强转化。</p>
+  <p><strong>为什么值得看：</strong>多行为推荐是电商、内容和广告系统的核心问题，生成式建模如果能处理行为强度，会比简单多任务分类更贴近业务漏斗。</p>
+  <p><strong>对推荐系统的启发：</strong>可以把点击、停留、加购、收藏、购买等行为建模为有强度的轨迹，再用生成式模型预测下一阶段的转化路径。</p>
+  <div class="label">引用：<a href="https://arxiv.org/abs/2604.24472v1" target="_blank" rel="noopener noreferrer">arXiv</a></div>
+</article>
+<article>
+  <h3><a href="https://arxiv.org/abs/2604.24405v1" target="_blank" rel="noopener noreferrer">How Personal Characteristics Shape User Exploration of Diverse Movie Recommendations with a LLM-Based Multi-Agent System</a></h3>
+  <p>这篇工作用 LLM-based multi-agent system 研究不同用户特征如何影响他们对多样化电影推荐的探索意愿。它把多样性评测从统一指标推进到个性差异层面。</p>
+  <p><strong>为什么值得看：</strong>推荐多样性经常被平均化评估，但真实用户对新颖、多样和熟悉内容的接受度差异很大。</p>
+  <p><strong>对推荐系统的启发：</strong>可以用 LLM agent 构造初步用户探索画像，但最终应与真实日志或用户实验校准，避免把模拟用户当成真实偏好。</p>
+  <div class="label">引用：<a href="https://arxiv.org/abs/2604.24405v1" target="_blank" rel="noopener noreferrer">arXiv</a></div>
+</article>
+<article>
+  <h3><a href="https://arxiv.org/abs/2604.23640v1" target="_blank" rel="noopener noreferrer">Prompt-Unknown Promotion Attacks against LLM-based Sequential Recommender Systems</a></h3>
+  <p>该文研究 LLM 驱动的序列推荐系统在 prompt 不可见情况下的推广攻击。随着推荐模型通过 prompt 读取用户序列并生成推荐，攻击者可能利用新的接口形态操纵曝光。</p>
+  <p><strong>为什么值得看：</strong>LLM-SRS 的安全边界和传统推荐不同，攻击不一定只发生在训练数据或 item embedding 层，也可能发生在提示与推理链路。</p>
+  <p><strong>对推荐系统的启发：</strong>后续做 LLM4Rec 时应把 promotion attack、prompt leakage、item injection 和广告合规一起纳入鲁棒评测。</p>
+  <div class="label">引用：<a href="https://arxiv.org/abs/2604.23640v1" target="_blank" rel="noopener noreferrer">arXiv</a></div>
+</article>
+<article>
+  <h3><a href="https://arxiv.org/abs/2604.23810v1" target="_blank" rel="noopener noreferrer">Similar Users-Augmented Interest Network</a></h3>
+  <p>该文回到 CTR 预测核心问题，强调用户行为序列能有效表达偏好，并通过相似用户增强兴趣建模。它属于更接近工业推荐系统的模型增益方向。</p>
+  <p><strong>为什么值得看：</strong>在大模型方法升温的同时，CTR 预测中的相似用户增强和兴趣网络仍然是高价值、可落地的研究路线。</p>
+  <p><strong>对推荐系统的启发：</strong>可以把相似用户增强与 LLM 生成的用户意图摘要结合，用邻域行为约束生成式用户表示，降低幻觉式个性化。</p>
+  <div class="label">引用：<a href="https://arxiv.org/abs/2604.23810v1" target="_blank" rel="noopener noreferrer">arXiv</a></div>
+</article></div>
+</section>
+<section id="llm_hotspots">
+  <h2>LLM 热点论文</h2>
+  <div class="trend"><p>LLM 板块今天的热点不是单一模型规模，而是“怎么让模型在复杂任务中更稳定地行动和推理”。Agent 方向关注探索不足和环境理解不完整，RAG/多源证据方向关注证据选择和诊断推理，推理效率方向关注减少冗长 reasoning trace，同时保持准确性。另一个重要信号是过程级奖励模型从数学等静态任务扩展到 agentic data analysis，说明研究社区正在把 reward modeling 推向动态、交互式任务。对推荐系统而言，这些趋势意味着：推荐不只是排序，还可能演化为会检索、会解释、会分析实验、会与用户交互的 agentic decision system。</p><ul><li>Agent 训练开始强调多样化并行探索，以缓解单一路径 reason-then-act 的局限。</li><li>多源证据融合和 RAG grounding 仍是热点，尤其适合推荐解释和知识增强召回。</li><li>高效推理从简单压缩 CoT 转向 step-level advantage selection 等细粒度选择机制。</li><li>过程级奖励模型进入数据分析任务，为自动实验分析和推荐系统诊断提供新工具。</li><li>可信 AI 研究从红队攻击扩展到普通用户措辞变化下的稳定性。</li></ul></div>
+  <div class="cards"><article>
+  <h3><a href="https://arxiv.org/abs/2604.24320v1" target="_blank" rel="noopener noreferrer">DPEPO: Diverse Parallel Exploration Policy Optimization for LLM-based Agents</a></h3>
+  <p>DPEPO 针对 LLM agent 顺序 reason-then-act 范式中的探索不足问题，提出多样化并行探索的策略优化思路。它关注 agent 在复杂环境中如何获得更完整的环境理解。</p>
+  <p><strong>为什么值得看：</strong>Agent 如果只能沿单一路径探索，很容易在推荐、搜索和交互系统中形成局部最优或过早收敛。</p>
+  <p><strong>对推荐系统的启发：</strong>可以把多样化并行探索用于推荐 agent 的策略学习，例如同时探索不同用户意图解释、召回路径和重排策略。</p>
+  <div class="label">引用：<a href="https://arxiv.org/abs/2604.24320v1" target="_blank" rel="noopener noreferrer">arXiv</a></div>
+</article>
+<article>
+  <h3><a href="https://arxiv.org/abs/2604.24186v1" target="_blank" rel="noopener noreferrer">MultiDx: A Multi-Source Knowledge Integration Framework towards Diagnostic Reasoning</a></h3>
+  <p>MultiDx 面向诊断推理，强调 LLM 需要整合多源知识，而不是只依赖通用常识推理。虽然应用在医疗场景，但核心问题是多源证据的选择、融合和推理。</p>
+  <p><strong>为什么值得看：</strong>多源知识融合是 RAG 和 agent 系统的关键瓶颈，尤其适合需要证据链的高风险决策。</p>
+  <p><strong>对推荐系统的启发：</strong>推荐解释也可以借鉴多源诊断框架，把用户历史、item 知识、上下文、群体偏好整合成可审计的推荐理由。</p>
+  <div class="label">引用：<a href="https://arxiv.org/abs/2604.24186v1" target="_blank" rel="noopener noreferrer">arXiv</a></div>
+</article>
+<article>
+  <h3><a href="https://arxiv.org/abs/2604.24003v1" target="_blank" rel="noopener noreferrer">Stabilizing Efficient Reasoning with Step-Level Advantage Selection</a></h3>
+  <p>该工作关注 LLM 推理效率，试图在减少冗长 reasoning trace 的同时保持推理质量。它用 step-level advantage selection 处理哪些推理步骤值得保留的问题。</p>
+  <p><strong>为什么值得看：</strong>推理成本已经成为 LLM 应用落地的关键限制，尤其是在高频推荐、搜索和广告系统中。</p>
+  <p><strong>对推荐系统的启发：</strong>可以把 step-level selection 用在推荐解释和用户意图推理中，只保留对排序有增益的推理步骤，降低在线延迟。</p>
+  <div class="label">引用：<a href="https://arxiv.org/abs/2604.24003v1" target="_blank" rel="noopener noreferrer">arXiv</a></div>
+</article>
+<article>
+  <h3><a href="https://arxiv.org/abs/2604.24198v1" target="_blank" rel="noopener noreferrer">Rewarding the Scientific Process: Process-Level Reward Modeling for Agentic Data Analysis</a></h3>
+  <p>这篇工作把过程奖励模型用于 agentic data analysis，关注模型在动态数据分析任务中是否遵循好的分析过程，而不只是最终答案。</p>
+  <p><strong>为什么值得看：</strong>科研和业务分析都需要过程质量，特别是数据清洗、假设生成、实验诊断和结论审查。</p>
+  <p><strong>对推荐系统的启发：</strong>推荐系统实验分析可以引入过程级奖励，评估 agent 是否正确检查数据偏差、分桶指标、反事实解释和消融结果。</p>
+  <div class="label">引用：<a href="https://arxiv.org/abs/2604.24198v1" target="_blank" rel="noopener noreferrer">arXiv</a></div>
+</article>
+<article>
+  <h3><a href="https://arxiv.org/abs/2604.24700v1" target="_blank" rel="noopener noreferrer">Green Shielding: A User-Centric Approach Towards Trustworthy AI</a></h3>
+  <p>Green Shielding 关注普通用户措辞变化对 LLM 输出稳定性的影响，而不是只看恶意攻击。它提出更贴近日常使用的可信 AI 评测视角。</p>
+  <p><strong>为什么值得看：</strong>真实应用中，大量失败不是来自显式攻击，而是来自自然语言表达差异和用户上下文变化。</p>
+  <p><strong>对推荐系统的启发：</strong>推荐系统中的自然语言需求理解、对话推荐和解释生成，都需要评估同一用户意图在不同表达下是否得到一致且合理的推荐。</p>
+  <div class="label">引用：<a href="https://arxiv.org/abs/2604.24700v1" target="_blank" rel="noopener noreferrer">arXiv</a></div>
+</article></div>
+</section>
+<section id="data_centric_ai">
+  <h2>Data-centric AI</h2>
+  <div class="trend"><p>Data-centric AI 今天的信号比较分散，但可以归纳为三类：第一类是评测重建，例如 ReVSI 指出现有 VLM 空间智能评测可能系统性失效；第二类是数据生成和工具化，例如 synthetic-data-generator 与 NeMo DataDesigner 把合成数据从论文方法推进到可复用框架；第三类是把质量评估转成排序或奖励问题，例如 explanation quality assessment as ranking。总体看，数据中心方法正在从“多造数据”转向“知道什么数据、评测和解释真的有用”。</p><ul><li>评测数据集本身成为研究对象，尤其是 VLM 和 3D reasoning 的 benchmark 有效性。</li><li>合成数据工具逐渐工程化，开始支持从 seed data 或结构化表格生成高质量数据。</li><li>解释质量评估被转成 listwise ranking/reward 问题，和推荐排序目标天然接近。</li><li>形式化证明和优化训练虽不直接属于推荐，但体现了高质量训练轨迹和课程设计的重要性。</li><li>推荐系统可以把数据价值评估、解释排序、合成用户行为和 benchmark 审计放到同一套数据闭环里。</li></ul></div>
+  <div class="cards"><article>
+  <h3><a href="https://arxiv.org/abs/2604.24300v1" target="_blank" rel="noopener noreferrer">ReVSI: Rebuilding Visual Spatial Intelligence Evaluation for Accurate Assessment of VLM 3D Reasoning</a></h3>
+  <p>ReVSI 指出现有空间智能评测在现代 VLM 设置下可能系统性失效，并尝试重建更准确的 3D reasoning 评测。核心贡献是重新审视 benchmark 本身。</p>
+  <p><strong>为什么值得看：</strong>模型能力提升后，旧 benchmark 可能不再测到真正能力，甚至产生错误结论。</p>
+  <p><strong>对推荐系统的启发：</strong>推荐系统也需要定期审计离线评测集：旧的点击日志、负采样和多样性指标可能无法反映新模型或新交互形态。</p>
+  <div class="label">引用：<a href="https://arxiv.org/abs/2604.24300v1" target="_blank" rel="noopener noreferrer">arXiv</a></div>
+</article>
+<article>
+  <h3><a href="https://github.com/hitsz-ids/synthetic-data-generator" target="_blank" rel="noopener noreferrer">hitsz-ids/synthetic-data-generator</a></h3>
+  <p>这是一个面向高质量结构化表格数据生成的开源框架。它说明合成数据能力正在从研究代码转向更可复用的工程工具。</p>
+  <p><strong>为什么值得看：</strong>表格数据生成对企业 AI、推荐特征模拟、隐私保护实验和冷启动数据构造都有实际价值。</p>
+  <p><strong>对推荐系统的启发：</strong>可以用结构化合成数据生成用户属性、item 属性和稀疏行为场景，用于推荐系统压力测试和冷启动实验。</p>
+  <div class="label">引用：<a href="https://github.com/hitsz-ids/synthetic-data-generator" target="_blank" rel="noopener noreferrer">GitHub</a></div>
+</article>
+<article>
+  <h3><a href="https://github.com/NVIDIA-NeMo/DataDesigner" target="_blank" rel="noopener noreferrer">NVIDIA-NeMo/DataDesigner</a></h3>
+  <p>NeMo Data Designer 支持从零或从 seed data 生成高质量合成数据，属于大模型训练/微调数据工具链的一部分。</p>
+  <p><strong>为什么值得看：</strong>高质量数据生成正在成为模型训练和应用适配的基础设施，而不是一次性脚本。</p>
+  <p><strong>对推荐系统的启发：</strong>推荐研究可以借鉴这类 data designer 思路，为用户意图、推荐解释、对话偏好和反事实样本生成可控数据。</p>
+  <div class="label">引用：<a href="https://github.com/NVIDIA-NeMo/DataDesigner" target="_blank" rel="noopener noreferrer">GitHub</a></div>
+</article>
+<article>
+  <h3><a href="https://arxiv.org/abs/2604.24176v1" target="_blank" rel="noopener noreferrer">Explanation Quality Assessment as Ranking with Listwise Rewards</a></h3>
+  <p>该工作把解释质量评估从生成单个最佳解释改写成排序问题，并使用 listwise rewards 训练模型区分多个候选解释。</p>
+  <p><strong>为什么值得看：</strong>解释质量很难用单一文本指标衡量，排序式评估更符合人类偏好比较。</p>
+  <p><strong>对推荐系统的启发：</strong>推荐解释可以直接采用 listwise reward：让模型在多个解释中排序，而不是只生成一句看似合理的解释。</p>
+  <div class="label">引用：<a href="https://arxiv.org/abs/2604.24176v1" target="_blank" rel="noopener noreferrer">arXiv</a></div>
+</article>
+<article>
+  <h3><a href="https://arxiv.org/abs/2604.23712v1" target="_blank" rel="noopener noreferrer">OptProver: Bridging Olympiad and Optimization through Continual Training in Formal Theorem Proving</a></h3>
+  <p>OptProver 把形式化证明从奥赛数学扩展到优化领域，并使用持续训练桥接不同任务域。虽然不直接面向推荐，但体现了专业领域数据和训练课程的重要性。</p>
+  <p><strong>为什么值得看：</strong>高质量领域数据、持续训练和可验证任务正在成为提升推理能力的重要路径。</p>
+  <p><strong>对推荐系统的启发：</strong>推荐系统中的约束优化、拍卖、预算控制和多目标排序也可以探索更形式化的数据与验证框架。</p>
+  <div class="label">引用：<a href="https://arxiv.org/abs/2604.23712v1" target="_blank" rel="noopener noreferrer">arXiv</a></div>
+</article></div>
+</section>
+<section id="ai_social_tools">
+  <h2>AI 社媒/工具/产品动态</h2>
+  <div class="trend"><p>工具/产品板块已经恢复抓取，今天的候选主要来自 GitHub 与公开讨论源。整体趋势是 RAG、agent workflow、LLM observability 和企业级编排继续成为开发者关注重点：Haystack、Dify、LangChain4j、Opik、RAGFlow 分别对应生产级 RAG pipeline、agent workflow 平台、JVM 生态 LLM 应用、可观测与评测、RAG+agent 引擎。对推荐系统来说，这些工具不是外围信息：它们正在提供可复用的检索、评测、trace、agent 编排能力，可以直接服务于推荐解释、离线诊断、知识增强召回和实验自动化。</p><ul><li>RAG 工具继续向生产化、可控 pipeline 和 agent 能力融合演进。</li><li>Agent workflow 平台开始强调从原型到生产部署的完整生命周期。</li><li>LLM observability/评测工具成为刚需，尤其适合推荐解释和对话推荐的质量监控。</li><li>JVM 生态的 LLM 应用框架成熟，对已有 Java 推荐服务栈有实际意义。</li><li>推荐系统可以把这些工具作为实验平台，而不是只关注论文模型本身。</li></ul></div>
+  <div class="cards"><article>
+  <h3><a href="https://github.com/deepset-ai/haystack" target="_blank" rel="noopener noreferrer">deepset-ai/haystack</a></h3>
+  <p>Haystack 是开源 AI orchestration 框架，用于构建 context-engineered、production-ready 的 LLM 应用，强调检索、路由、记忆和生成的模块化 pipeline。</p>
+  <p><strong>为什么值得看：</strong>RAG 和 agent 系统要落地，关键不只是模型，而是可控、可观测、可组合的 pipeline。</p>
+  <p><strong>对推荐系统的启发：</strong>可以用 Haystack 类框架搭建推荐解释与知识增强召回实验，把 item 知识、用户历史和检索链路显式编排起来。</p>
+  <div class="label">引用：<a href="https://github.com/deepset-ai/haystack" target="_blank" rel="noopener noreferrer">GitHub</a></div>
+</article>
+<article>
+  <h3><a href="https://github.com/langgenius/dify" target="_blank" rel="noopener noreferrer">langgenius/dify</a></h3>
+  <p>Dify 是面向 agentic workflow 开发的生产级平台，强调应用搭建、工作流和部署。</p>
+  <p><strong>为什么值得看：</strong>AI 应用开发正在从单 prompt 调用转向可维护的 workflow 和应用平台。</p>
+  <p><strong>对推荐系统的启发：</strong>推荐团队可以用 workflow 平台快速搭建用户反馈分析、推荐解释生成、召回诊断和日报自动化 agent。</p>
+  <div class="label">引用：<a href="https://github.com/langgenius/dify" target="_blank" rel="noopener noreferrer">GitHub</a></div>
+</article>
+<article>
+  <h3><a href="https://github.com/langchain4j/langchain4j" target="_blank" rel="noopener noreferrer">langchain4j/langchain4j</a></h3>
+  <p>LangChain4j 是 JVM 生态的开源 LLM 应用库，提供模型、向量库、tool calling、MCP、agent 和 RAG 等统一接口。</p>
+  <p><strong>为什么值得看：</strong>很多推荐和广告服务栈仍以 Java/JVM 为主，JVM 原生 LLM 框架能降低工程集成成本。</p>
+  <p><strong>对推荐系统的启发：</strong>可以在已有 Java 推荐服务旁路接入对话解释、知识检索和工具调用，而不必重写整套在线服务。</p>
+  <div class="label">引用：<a href="https://github.com/langchain4j/langchain4j" target="_blank" rel="noopener noreferrer">GitHub</a></div>
+</article>
+<article>
+  <h3><a href="https://github.com/comet-ml/opik" target="_blank" rel="noopener noreferrer">comet-ml/opik</a></h3>
+  <p>Opik 面向 LLM 应用、RAG 系统和 agent workflow 的调试、评估和监控，提供 tracing、自动评估和生产 dashboard。</p>
+  <p><strong>为什么值得看：</strong>LLM 应用进入生产后，质量问题更多来自检索、上下文、工具调用和长链路，而不只是模型本身。</p>
+  <p><strong>对推荐系统的启发：</strong>推荐解释、对话推荐和 agentic 分析都需要 trace 与评测，Opik 类工具可以帮助定位召回证据缺失、解释漂移和用户反馈问题。</p>
+  <div class="label">引用：<a href="https://github.com/comet-ml/opik" target="_blank" rel="noopener noreferrer">GitHub</a></div>
+</article>
+<article>
+  <h3><a href="https://github.com/infiniflow/ragflow" target="_blank" rel="noopener noreferrer">infiniflow/ragflow</a></h3>
+  <p>RAGFlow 是开源 RAG 引擎，强调把 RAG 与 agent 能力融合，为 LLM 构建更强的上下文层。</p>
+  <p><strong>为什么值得看：</strong>RAG 工具正在从文档问答扩展到更通用的上下文工程和 agent 基础设施。</p>
+  <p><strong>对推荐系统的启发：</strong>推荐系统可以借鉴 RAGFlow 的上下文层思路，把用户画像、item 知识、实时上下文和外部证据统一组织给 LLM4Rec 使用。</p>
+  <div class="label">引用：<a href="https://github.com/infiniflow/ragflow" target="_blank" rel="noopener noreferrer">GitHub</a></div>
+</article></div>
+</section>
+  </main>
+</body>
+</html>
