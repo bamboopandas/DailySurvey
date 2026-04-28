@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>2026-03 AI / 推荐系统研究月报：从模型能力竞赛转向可运营的智能系统 - 2026-03</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f7f8fa;
+      --panel: #ffffff;
+      --text: #15171a;
+      --muted: #5f6875;
+      --line: #dfe4ea;
+      --accent: #0f766e;
+    }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    main {
+      max-width: 1040px;
+      margin: 0 auto;
+      padding: 40px 20px 72px;
+    }
+    header {
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 28px;
+      padding-bottom: 24px;
+    }
+    h1 {
+      font-size: clamp(28px, 4vw, 44px);
+      line-height: 1.18;
+      margin: 0 0 8px;
+    }
+    .date, .muted {
+      color: var(--muted);
+    }
+    section {
+      margin-top: 28px;
+      padding-top: 8px;
+    }
+    h2 {
+      font-size: 24px;
+      margin: 0 0 12px;
+    }
+    .trend {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 18px 20px;
+    }
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 14px;
+      margin-top: 16px;
+    }
+    article {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 16px;
+    }
+    h3 {
+      font-size: 17px;
+      line-height: 1.35;
+      margin: 0 0 10px;
+    }
+    a {
+      color: var(--accent);
+      text-decoration-thickness: .08em;
+      text-underline-offset: .18em;
+    }
+    ul {
+      padding-left: 1.2em;
+    }
+    .label {
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <h1>2026-03 AI / 推荐系统研究月报：从模型能力竞赛转向可运营的智能系统</h1>
+      <div class="date">2026-03</div>
+      <p>2026 年 3 月最大的变化，不是单篇论文或单个模型刷新了多少分，而是 AI 研究和产品生态同时把注意力从“更强模型”推向“可运营系统”：模型要会用电脑、会找工具、能在长任务中节省推理成本；评测要覆盖偏差、幻觉、跨域数据和真实工作流；推荐系统也从单一序列建模转向多模态、生成式、几何解释和用户可治理画像。证据来自 OpenAI GPT-5.4 的计算机使用与 1M 上下文发布、Ares/AgentSkillOS/RAIM 等 3 月 arXiv 论文对智能体路由、技能编排和代码库级验证的集中推进，以及 AgrI Challenge、LLM Judge、MARCH 等工作对数据与评测可靠性的强调。对推荐系统研究的影响很具体：下月值得重点观察“多模态语义表征是否真正提升线上收益”“LLM/agent 是否能进入推荐链路的可控编排层”“评测是否从离线命中率扩展到跨域、偏差、幻觉、可解释和用户可编辑画像”。</p>
+    </header>
+    <section id="recsys_research">
+  <h2>推荐系统研究动态</h2>
+  <div class="trend"><p>本月推荐系统研究的主线是“从更深的序列模型，走向可解释、可迁移、可治理的用户表征”。强趋势有两条：第一，多模态推荐不再满足于把文本和图像简单拼接，CAMMSR 与 VLM2Rec 都把问题定位到动态模态权重、跨模态协同和模态坍塌；第二，生成式推荐开始反思“平铺长序列”的计算和语义噪声，转向层级会话、偏好意识和更结构化的用户行为建模。弱信号是 RecBundle 这类几何范式：它还不是工业主线，但把信息茧房、演化偏差和 LLM 结合放到同一解释框架，值得跟踪。一次性事件主要来自社区层面，ACM TORS 在 3 月集中出现多模态和音乐推荐专题征稿、CCF 排名变化，说明推荐研究的议题正在向更具体场景和更制度化发表渠道聚拢。</p><ul><li>强趋势：多模态推荐开始关注“是否真的使用了多模态”，VLM2Rec 直接把标准微调导致的模态坍塌作为核心失败模式，CAMMSR 则用类别引导的 MoE 建模用户在不同物品和类别上的模态偏好。</li><li>强趋势：生成式推荐从模仿 LLM 的自回归范式，转向重新设计用户序列结构；H-PGR 指出 flat-sequence 假设会放大噪声并损害长历史建模效率。</li><li>弱信号：几何解释框架开始把推荐系统看成动态反馈回路，RecBundle 用纤维丛分离用户网络拓扑和动态偏好，但其工程可复现性和线上收益仍需验证。</li><li>一次性事件：RS_c 3 月社区动态更多是征稿、排名和博客讨论，不构成技术趋势证据，但反映多模态、音乐推荐和中文学术评价正在成为社区关注点。</li></ul></div>
+  <div class="cards"><article>
+  <h3><a href="https://arxiv.org/abs/2603.00980" target="_blank" rel="noopener noreferrer">Beyond the Flat Sequence: Hierarchical and Preference-Aware Generative Recommendations</a></h3>
+  <p>这篇 3 月 1 日提交的论文把生成式推荐的瓶颈放在“平铺长序列”假设上：长历史里存在会话层级和稀疏语义，密集注意力会把噪声也当成偏好信号。它代表了本月生成式推荐从“套用自回归模型”转向“重构推荐序列语义”的方向。</p>
+  <p><strong>为什么值得看：</strong>如果生成式推荐继续沿用语言模型的线性 token 叙事，长序列用户的真实兴趣结构会被稀释；层级偏好建模可能成为下一轮序列推荐 benchmark 的关键变量。</p>
+  <p><strong>对推荐系统的启发：</strong>可做一个长历史 benchmark：按会话、品类、时间间隔构造层级标签，对比 HSTU/SASRec/生成式解码在短期点击、长期复访和多兴趣召回上的差异，并加入注意力噪声诊断指标。</p>
+  <div class="label">引用：<a href="https://arxiv.org/abs/2603.00980" target="_blank" rel="noopener noreferrer">arXiv:2603.00980</a></div>
+</article>
+<article>
+  <h3><a href="https://arxiv.org/abs/2603.04320" target="_blank" rel="noopener noreferrer">CAMMSR: Category-Guided Attentive Mixture of Experts for Multimodal Sequential Recommendation</a></h3>
+  <p>CAMMSR 以类别预测辅助任务驱动 MoE 分配模态权重，试图捕捉用户在不同物品类别上对图像、文本等模态的动态依赖。它不是把多模态当作统一 embedding，而是把“什么时候该信哪个模态”变成模型的一部分。</p>
+  <p><strong>为什么值得看：</strong>电商、短视频、音乐等场景里，模态价值随品类和用户状态变化很大；这类方法把多模态推荐的核心从融合技巧推进到上下文相关的模态治理。</p>
+  <p><strong>对推荐系统的启发：</strong>线上可设计“模态贡献审计”：按品类统计文本、图像、音频特征的边际增益，训练门控模型时加入模态 dropout 和跨品类迁移测试，避免单一强模态掩盖弱模态。</p>
+  <div class="label">引用：<a href="https://arxiv.org/abs/2603.04320" target="_blank" rel="noopener noreferrer">arXiv:2603.04320</a></div>
+</article>
+<article>
+  <h3><a href="https://arxiv.org/abs/2603.17450" target="_blank" rel="noopener noreferrer">VLM2Rec: Resolving Modality Collapse in Vision-Language Model Embedders for Multimodal Sequential Recommendation</a></h3>
+  <p>VLM2Rec 直接指出，把 VLM 用作推荐 embedder 时，标准对比微调可能让模型过度依赖强模态，导致弱模态退化。论文用弱模态惩罚对比学习和跨模态拓扑正则来约束这一问题。</p>
+  <p><strong>为什么值得看：</strong>这是本月多模态推荐中最有工程警示意义的信号：更大的视觉语言模型不自动等于更好的推荐表征，协同过滤信号注入也可能破坏模态平衡。</p>
+  <p><strong>对推荐系统的启发：</strong>推荐团队可以把“模态坍塌率”做成训练监控：分别评估文本-only、图像-only、融合 embedding 的 NDCG/Recall 和梯度占比，在冷启动商品、低文本质量商品上单独报告收益。</p>
+  <div class="label">引用：<a href="https://huggingface.co/papers/2603.17450" target="_blank" rel="noopener noreferrer">Hugging Face Papers:2603.17450</a> / <a href="https://arxiv.org/abs/2603.17450" target="_blank" rel="noopener noreferrer">arXiv:2603.17450</a></div>
+</article>
+<article>
+  <h3><a href="https://arxiv.org/abs/2603.16088" target="_blank" rel="noopener noreferrer">RecBundle: A Next-Generation Geometric Paradigm for Explainable Recommender Systems</a></h3>
+  <p>RecBundle 把推荐系统视为动态反馈回路，用纤维丛思想把用户交互网络和个人动态偏好分层建模，目标是解释信息茧房、演化偏差和自适应推荐。</p>
+  <p><strong>为什么值得看：</strong>它代表一个弱但重要的方向：推荐解释不只是解释单次推荐理由，而是解释长期反馈如何改变用户和系统结构。</p>
+  <p><strong>对推荐系统的启发：</strong>可以从小规模实验做起：在 MovieLens/Amazon 上构建用户图拓扑漂移指标，跟踪重排策略对同质化、探索率和长期多样性的影响，再与 LLM 生成的可读解释对齐。</p>
+  <div class="label">引用：<a href="https://arxiv.org/abs/2603.16088" target="_blank" rel="noopener noreferrer">arXiv:2603.16088</a></div>
+</article>
+<article>
+  <h3><a href="https://recommender-systems.com/news/2026/03/" target="_blank" rel="noopener noreferrer">RS_c March 2026: Multimodal and Music Recommender Systems Calls</a></h3>
+  <p>RS_c 3 月记录了 ACM TORS 关于现代多模态推荐挑战、音乐推荐专题，以及 ACM TORS 进入中国 CCF 排名的社区事件。这些不是单项技术突破，但显示推荐研究议题正在向特定应用域和更稳定发表渠道收束。</p>
+  <p><strong>为什么值得看：</strong>社区征稿往往会塑造未来 6-12 个月 benchmark 和数据集供给，多模态、音乐、公平性和场景化评测可能获得更多系统化论文。</p>
+  <p><strong>对推荐系统的启发：</strong>跟踪这些专题的 accepted papers，提前整理公开数据集和评测协议；尤其是音乐推荐可围绕创作者收益、用户满意度和长期探索设计多目标 benchmark。</p>
+  <div class="label">引用：<a href="https://recommender-systems.com/news/2026/03/" target="_blank" rel="noopener noreferrer">RS_c March 2026</a></div>
+</article></div>
+</section>
+<section id="llm_hotspots">
+  <h2>LLM 热点论文</h2>
+  <div class="trend"><p>LLM 本月的研究主线是“长任务智能体的工程化”：模型能力发布、学术论文和开发工具都围绕同一个问题展开，即如何让 LLM 在多步任务中选择合适推理强度、调用正确工具、理解代码库结构，并能给出可审计的中间证据。强趋势包括 GPT-5.4 把计算机使用、工具搜索、1M 上下文和 token 效率作为产品卖点；Ares 将每步推理强度选择建模为优化问题；AgentSkillOS 把技能生态组织成可检索、可编排的树和 DAG。弱信号是半形式化代码推理与多设计代码生成，它们还依赖特定 benchmark，但说明智能体评测正在从“能否答题”转向“能否在复杂系统里安全改动”。一次性事件是个别模型发布本身；真正的趋势不是 GPT-5.4 这个名字，而是 frontier 模型开始把电脑操作、工具发现和长上下文执行作为默认能力。</p><ul><li>强趋势：frontier LLM 的产品指标开始围绕真实工作流，OpenAI GPT-5.4 明确强调计算机使用、工具搜索、Codex/API 支持和更少 reasoning token。</li><li>强趋势：智能体研究开始把成本控制作为一等问题，Ares 报告相对固定高推理强度最多减少 52.7% reasoning token，同时尽量保持任务成功率。</li><li>强趋势：技能/工具生态需要结构化管理，AgentSkillOS 用能力树和 DAG 编排解决 200 到 200K 技能规模下的发现和组合问题。</li><li>弱信号：代码智能体的可靠性研究从单步补丁生成扩展到半形式化证明、多候选设计和静态/动态影响分析，但这些框架距离通用生产标准还有距离。</li></ul></div>
+  <div class="cards"><article>
+  <h3><a href="https://openai.com/index/introducing-gpt-5-4/" target="_blank" rel="noopener noreferrer">OpenAI GPT-5.4: professional work, computer use and tool search</a></h3>
+  <p>OpenAI 在 3 月 5 日发布 GPT-5.4，强调 ChatGPT、API 和 Codex 中的专业工作能力、原生计算机使用、1M token 上下文、工具搜索和更高 token 效率。它把 LLM 热点从纯 benchmark 竞赛推向“能在真实软件和文档环境中完成任务”。</p>
+  <p><strong>为什么值得看：</strong>模型厂商正在把 agentic workflow 做成默认能力，未来评测会更多关注任务完成、工具选择、上下文保持、成本和可控权限，而不是单轮问答。</p>
+  <p><strong>对推荐系统的启发：</strong>推荐系统可以实验“LLM agent 作为召回/重排编排器”：让模型在候选召回、特征诊断、规则解释和指标归因之间选择工具，同时记录每步成本和失败原因。</p>
+  <div class="label">引用：<a href="https://openai.com/index/introducing-gpt-5-4/" target="_blank" rel="noopener noreferrer">OpenAI GPT-5.4</a></div>
+</article>
+<article>
+  <h3><a href="https://arxiv.org/abs/2603.07915" target="_blank" rel="noopener noreferrer">Ares: Adaptive Reasoning Effort Selection for Efficient LLM Agents</a></h3>
+  <p>Ares 针对多步智能体中的推理成本浪费，训练轻量路由器为每一步选择最低可行推理强度。论文在 TAU-Bench、BrowseComp-Plus、WebArena 等任务上评估，报告 reasoning token 使用最多降低 52.7%。</p>
+  <p><strong>为什么值得看：</strong>这把“思考多久”从提示词习惯变成了系统优化问题，是 LLM agent 规模化部署绕不开的成本控制方向。</p>
+  <p><strong>对推荐系统的启发：</strong>推荐链路可借鉴分层 effort routing：低风险请求用轻模型和缓存，高价值或高不确定场景触发 LLM/重排序/探索策略，并把用户价值、延迟和置信度纳入同一优化目标。</p>
+  <div class="label">引用：<a href="https://arxiv.org/abs/2603.07915" target="_blank" rel="noopener noreferrer">arXiv:2603.07915</a></div>
+</article>
+<article>
+  <h3><a href="https://arxiv.org/abs/2603.02176" target="_blank" rel="noopener noreferrer">Organizing, Orchestrating, and Benchmarking Agent Skills at Ecosystem Scale</a></h3>
+  <p>AgentSkillOS 关注 Claude agent skills 增长后如何发现、选择和组合技能。它用能力树管理技能，用 DAG pipeline 编排任务，并构造 artifact-rich benchmark 验证 200 到 200K 技能规模下的表现。</p>
+  <p><strong>为什么值得看：</strong>当工具数量爆炸，智能体的瓶颈不再只是模型能力，而是工具语义检索、依赖组织和执行计划可控性。</p>
+  <p><strong>对推荐系统的启发：</strong>可把推荐系统内部工具也技能化：特征查询、用户画像解释、候选池诊断、A/B 指标归因都注册为能力节点，再评测 agent 是否能为运营问题自动选择正确分析路径。</p>
+  <div class="label">引用：<a href="https://arxiv.org/abs/2603.02176" target="_blank" rel="noopener noreferrer">arXiv:2603.02176</a></div>
+</article>
+<article>
+  <h3><a href="https://arxiv.org/abs/2603.01896" target="_blank" rel="noopener noreferrer">Agentic Code Reasoning</a></h3>
+  <p>这篇论文研究 LLM agent 不执行代码时能否理解代码语义，提出半形式化推理，让 agent 写出显式前提、执行路径和形式结论。它把代码智能体从“生成补丁”推进到“给出可审计语义证据”。</p>
+  <p><strong>为什么值得看：</strong>长任务 agent 如果不能解释自己为什么认为补丁等价或故障定位正确，就很难进入高风险代码库和自动化奖励循环。</p>
+  <p><strong>对推荐系统的启发：</strong>推荐系统的策略变更也可要求 agent 输出半形式化证据：影响哪些召回源、哪些排序特征、哪些实验桶和哪些风险指标，再由静态检查或离线回放验证。</p>
+  <div class="label">引用：<a href="https://arxiv.org/abs/2603.01896" target="_blank" rel="noopener noreferrer">arXiv:2603.01896</a></div>
+</article>
+<article>
+  <h3><a href="https://arxiv.org/abs/2603.01814" target="_blank" rel="noopener noreferrer">Architecture-Aware Multi-Design Generation for Repository-Level Feature Addition</a></h3>
+  <p>RAIM 针对代码库级功能添加中的“架构盲区”，先在代码图上多轮定位，再生成多个设计方案，并用静态/动态分析选择影响最小的补丁。它把 agentic coding 的关键问题定义为多方案搜索和回归风险控制。</p>
+  <p><strong>为什么值得看：</strong>这类工作说明 LLM 编程研究正在从单文件生成转向系统演化：理解架构、生成备选方案、验证影响，比一次性产出代码更重要。</p>
+  <p><strong>对推荐系统的启发：</strong>推荐平台的自动调参和策略生成也应采用多方案制：同一业务目标生成多组召回/重排/探索策略，用离线反事实评估和 guardrail 指标筛选，而不是直接上线单一方案。</p>
+  <div class="label">引用：<a href="https://arxiv.org/abs/2603.01814" target="_blank" rel="noopener noreferrer">arXiv:2603.01814</a></div>
+</article></div>
+</section>
+<section id="data_centric_ai">
+  <h2>Data-centric AI</h2>
+  <div class="trend"><p>Data-centric AI 本月的主线是“评测和数据开始模拟部署环境，而不是只服务模型排名”。强趋势是跨域、多源和带保证的评测：AgrI Challenge 让不同团队独立采集数据并用 Cross-Team Validation 衡量泛化；LLM Judge 工作尝试给自动评审偏差设形式化边界；MARCH 用信息不对称的多 agent 自检来降低 RAG 幻觉。弱信号是会议和赛道层面对 benchmark/dataset 的制度化鼓励，例如 AIware 2026 设立 Benchmark &amp; Dataset Track。一次性事件是某个农业视觉数据集本身；真正值得迁移的是“数据来源差异被显式纳入评测协议”。</p><ul><li>强趋势：数据集不再被看成固定资源，AgrI Challenge 让采集团队成为域变量，直接暴露单源训练在跨团队测试上的泛化缺口。</li><li>强趋势：LLM-as-judge 进入“偏差有界”阶段，研究关注未知或对抗性偏差下如何保留排名相关性并降低伤害。</li><li>强趋势：RAG 可靠性评测从检索命中转向声明级验证，MARCH 把回答拆成原子命题并用信息隔离的 Checker 复核。</li><li>弱信号：Benchmark &amp; Dataset Track 等机制说明数据和评测论文获得更稳定的发表入口，但高质量推荐系统数据集仍缺少类似跨团队采集协议。</li></ul></div>
+  <div class="cards"><article>
+  <h3><a href="https://arxiv.org/abs/2603.07356" target="_blank" rel="noopener noreferrer">AgrI Challenge: A Data-Centric AI Competition for Cross-Team Validation in Agricultural Vision</a></h3>
+  <p>AgrI Challenge 让 12 个团队独立采集六类树种的 50,673 张田间图像，并提出 Cross-Team Validation：TOTO 衡量单源泛化，LOTO 衡量多源协作训练。实验显示单源训练即使验证集接近完美，跨团队测试仍可出现明显缺口，多源训练能显著收窄。</p>
+  <p><strong>为什么值得看：</strong>这是一种可迁移的数据中心评测思想：把数据采集者、环境和流程差异作为 benchmark 的核心，而不是噪声。</p>
+  <p><strong>对推荐系统的启发：</strong>推荐系统可做 Cross-Platform 或 Cross-Team Validation：不同城市、渠道、运营团队独立构建样本域，评估召回和排序模型是否只学会了单一采集流程的偏差。</p>
+  <div class="label">引用：<a href="https://arxiv.org/abs/2603.07356" target="_blank" rel="noopener noreferrer">arXiv:2603.07356</a></div>
+</article>
+<article>
+  <h3><a href="https://arxiv.org/abs/2603.05485" target="_blank" rel="noopener noreferrer">Towards Provably Unbiased LLM Judges via Bias-Bounded Evaluation</a></h3>
+  <p>这篇论文把 LLM-as-judge 的问题从“哪个 judge 更准”推进到“在未知或对抗性偏差下能否设定伤害边界”。作者提出平均偏差有界框架，并在 Arena-Hard-Auto 等设置中保留较高排名相关性。</p>
+  <p><strong>为什么值得看：</strong>自动评测和自动奖励正在进入 agent 训练、产品排序和内容治理，如果 judge 偏差不可控，系统会把偏差放大成优化目标。</p>
+  <p><strong>对推荐系统的启发：</strong>推荐系统里可把 LLM judge 用于内容质量、解释质量和安全性评审，但必须报告格式偏差、位置偏差、品牌偏差等偏差上界，并与人工抽检闭环。</p>
+  <div class="label">引用：<a href="https://arxiv.org/abs/2603.05485" target="_blank" rel="noopener noreferrer">arXiv:2603.05485</a></div>
+</article>
+<article>
+  <h3><a href="https://arxiv.org/abs/2603.24579" target="_blank" rel="noopener noreferrer">MARCH: Multi-Agent Reinforced Self-Check for LLM Hallucination</a></h3>
+  <p>MARCH 针对 RAG 场景中 verifier 复读原回答错误的确认偏差，设计 Solver、Proposer、Checker 三个角色：先生成回答，再拆解为可验证原子命题，最后让隔离信息的 Checker 依据检索证据复核。</p>
+  <p><strong>为什么值得看：</strong>这把幻觉评测从整体回答打分推进到声明级证据对齐，适合对可靠性要求高的知识服务。</p>
+  <p><strong>对推荐系统的启发：</strong>推荐解释和导购问答可采用同样机制：把“推荐这件商品因为……”拆成可验证声明，如价格、库存、用户偏好、相似物品证据，再独立检查，降低错误解释伤害信任。</p>
+  <div class="label">引用：<a href="https://arxiv.org/abs/2603.24579" target="_blank" rel="noopener noreferrer">arXiv:2603.24579</a></div>
+</article>
+<article>
+  <h3><a href="https://2026.aiwareconf.org/track/aiware-2026-benchmark---dataset-track" target="_blank" rel="noopener noreferrer">AIware 2026 Benchmark &amp; Dataset Track</a></h3>
+  <p>AIware 2026 在 3 月设立 Benchmark &amp; Dataset Track，并给出 Distinguished Dataset/Benchmark Award，议题覆盖数据集、benchmark、AI 软件工程与系统评测。</p>
+  <p><strong>为什么值得看：</strong>这类赛道不是单篇论文，但显示数据和评测基础设施正在被当作一等研究贡献，而不只是附录资源。</p>
+  <p><strong>对推荐系统的启发：</strong>推荐研究可推动类似 track：要求提交数据采集协议、隐私处理、偏差审计、长期行为指标和可复现实验脚本，减少只靠公开老数据集刷分。</p>
+  <div class="label">引用：<a href="https://2026.aiwareconf.org/track/aiware-2026-benchmark---dataset-track" target="_blank" rel="noopener noreferrer">AIware 2026 Benchmark &amp; Dataset Track</a></div>
+</article></div>
+</section>
+<section id="ai_social_tools">
+  <h2>AI 社媒/工具/产品动态</h2>
+  <div class="trend"><p>本月产品生态的主线是“AI 从聊天框进入工作台、个人上下文和多 agent 调度”。强趋势包括 OpenAI GPT-5.4/Codex app 把电脑使用、Windows 桌面、多 agent 并行、skills 和 automations 结合起来；Google 在 Workspace、Search Live、Personal Intelligence、Gemini Live 上把个人文件、邮件、网页、语音和设备场景打通。Anthropic 的 81k 用户访谈不是产品发布，但给出了需求侧证据：用户最想要的是专业卓越、个人转变、生活管理和时间自由。弱信号是“可迁移记忆/上下文导入”会成为平台竞争点。一次性事件是单个桌面端或模型版本更新；持续趋势是助手入口开始围绕任务流和个人数据重新布局。</p><ul><li>强趋势：AI 工具正在从单次对话变成多 agent 工作台，Codex app 的 Windows 更新、skills 和 automations 把长期后台任务纳入常规产品形态。</li><li>强趋势：办公套件成为 AI 产品竞争主战场，Gemini in Docs/Sheets/Slides/Drive 直接从用户文件、邮件和网页拉取上下文生成文档、表格和幻灯片。</li><li>强趋势：个人上下文成为平台壁垒，Google 在 3 月扩展 Personal Intelligence，并提供从其他 AI app 导入历史与偏好的切换工具。</li><li>弱信号：Anthropic 81k 访谈显示用户真正需求集中在减负、专业能力、生活管理和认知伙伴，这提示产品推荐不应只按功能点击率优化，还要衡量长期信任与心理负担。</li><li>一次性事件：GPT-5.4、Codex Windows、Gemini Drop 都是具体发布；跨来源共同指向的是“AI 作为工作流层”而非“聊天机器人功能增加”。</li></ul></div>
+  <div class="cards"><article>
+  <h3><a href="https://openai.com/index/introducing-the-codex-app/" target="_blank" rel="noopener noreferrer">OpenAI Codex app: Windows update, skills and automations</a></h3>
+  <p>OpenAI 在 Codex app 文章中于 3 月 4 日更新 Windows 可用性，并强调多 agent 并行、隔离 worktree、skills、automations 和可配置沙箱。它代表 AI 开发工具从 IDE 插件走向任务调度台。</p>
+  <p><strong>为什么值得看：</strong>软件工程 agent 的产品形态正在从“让我改一段代码”变成“我监督多个后台工作流”，这会改变个人和团队如何分配任务。</p>
+  <p><strong>对推荐系统的启发：</strong>推荐系统平台可以借鉴 review queue 和 automations：把日常指标异常、候选池漂移、规则冲突和实验解读交给 agent 定期处理，但所有策略变更进入人工审核队列。</p>
+  <div class="label">引用：<a href="https://openai.com/index/introducing-the-codex-app/" target="_blank" rel="noopener noreferrer">OpenAI Codex app</a></div>
+</article>
+<article>
+  <h3><a href="https://blog.google/products-and-platforms/products/workspace/gemini-workspace-updates-march-2026/" target="_blank" rel="noopener noreferrer">Google Workspace: Gemini in Docs, Sheets, Slides and Drive</a></h3>
+  <p>Google 3 月 10 日宣布 Gemini 在 Docs、Sheets、Slides、Drive 中增强：可从文件、邮件和网页拉取上下文生成文档、表格、幻灯片，并在 Drive 中跨资料提问。这是办公入口的强趋势证据。</p>
+  <p><strong>为什么值得看：</strong>AI 工具的关键入口不只是模型聊天页，而是用户已有数据和工作对象所在的位置；谁能安全连接上下文，谁就能控制任务流。</p>
+  <p><strong>对推荐系统的启发：</strong>推荐系统产品应把推荐解释嵌入业务对象：在商家后台、内容创作页、客服工单中直接解释候选、受众和预期效果，而不是另开分析工具。</p>
+  <div class="label">引用：<a href="https://blog.google/products-and-platforms/products/workspace/gemini-workspace-updates-march-2026/" target="_blank" rel="noopener noreferrer">Google Workspace Gemini March 2026</a></div>
+</article>
+<article>
+  <h3><a href="https://blog.google/innovation-and-ai/technology/ai/google-ai-updates-march-2026/" target="_blank" rel="noopener noreferrer">Google March AI recap: Search Live, Personal Intelligence and Gemini Live</a></h3>
+  <p>Google 4 月 1 日回顾 3 月 AI 更新：Search Live 扩展到 AI Mode 可用的 200 多个国家和地区，Personal Intelligence 扩展到美国的 Search、Chrome、Gemini app，Gemini 3.1 Flash Live 进入更实时的语音交互。</p>
+  <p><strong>为什么值得看：</strong>这说明大平台正在把 AI 助手嵌入搜索、浏览器、移动应用、电视和办公套件，形成跨入口的个人上下文层。</p>
+  <p><strong>对推荐系统的启发：</strong>推荐系统要为“跨入口用户意图”做准备：同一个用户在搜索、浏览器、邮件、视频和购物中的意图应可被合规汇总，并允许用户查看、修正和限制使用范围。</p>
+  <div class="label">引用：<a href="https://blog.google/innovation-and-ai/technology/ai/google-ai-updates-march-2026/" target="_blank" rel="noopener noreferrer">Google March AI recap</a></div>
+</article>
+<article>
+  <h3><a href="https://www.anthropic.com/features/81k-interviews" target="_blank" rel="noopener noreferrer">Anthropic: What 81,000 people want from AI</a></h3>
+  <p>Anthropic 发布对 80,508 名 Claude 用户的访谈分析，覆盖 159 个国家和 70 种语言。受访者最常提到专业卓越、个人转变、生活管理、时间自由等需求，同时也表达工作替代、能力退化和社会风险担忧。</p>
+  <p><strong>为什么值得看：</strong>这为“AI 工具到底服务什么需求”提供了需求侧材料：用户不是只想要更强模型，也想要减轻负担、保留掌控感和改善生活质量。</p>
+  <p><strong>对推荐系统的启发：</strong>推荐系统可建立“用户负担”指标：除点击和转化外，衡量任务完成时间、选择疲劳、后悔率、用户修正画像次数和长期满意度，把信任与自主性纳入目标函数。</p>
+  <div class="label">引用：<a href="https://www.anthropic.com/features/81k-interviews" target="_blank" rel="noopener noreferrer">Anthropic 81k interviews</a></div>
+</article>
+<article>
+  <h3><a href="https://help.openai.com/en/articles/6825453-chatgpt-guide" target="_blank" rel="noopener noreferrer">OpenAI ChatGPT release notes: GPT-5.3 Instant and Codex Windows</a></h3>
+  <p>OpenAI ChatGPT 发布日志记录了 3 月 3 日 GPT-5.3 Instant 更新和 3 月 4 日 Codex app on Windows。前者聚焦日常对话的准确性、搜索上下文和语气，后者把多 Codex agent 带到 Windows 桌面。</p>
+  <p><strong>为什么值得看：</strong>这说明产品团队在同时优化两端：普通用户感知到的对话顺滑度，以及专业用户的 agent 执行入口。</p>
+  <p><strong>对推荐系统的启发：</strong>推荐产品也应分层优化：普通用户侧关注解释自然度和少打扰，专业运营侧提供可并行执行、可回滚、可审查的 agent 工作流。</p>
+  <div class="label">引用：<a href="https://help.openai.com/en/articles/6825453-chatgpt-guide" target="_blank" rel="noopener noreferrer">OpenAI ChatGPT release notes</a></div>
+</article></div>
+</section>
+  </main>
+</body>
+</html>
