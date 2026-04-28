@@ -1,0 +1,67 @@
+{
+  "max_candidates_per_section": 30,
+  "tracked_researcher_bonus": 6.0,
+  "tracked_team_bonus": 4.0,
+  "sections": {
+    "recsys_research": [
+      {"term": "recommender system", "weight": 4.0},
+      {"term": "recommendation", "weight": 3.0},
+      {"term": "collaborative filtering", "weight": 3.0},
+      {"term": "sequential recommendation", "weight": 3.0},
+      {"term": "generative recommendation", "weight": 3.0},
+      {"term": "LLM4Rec", "weight": 3.0},
+      {"term": "retrieval", "weight": 1.5},
+      {"term": "ranking", "weight": 2.0},
+      {"term": "click-through rate", "weight": 2.0},
+      {"term": "CTR prediction", "weight": 2.0},
+      {"term": "user modeling", "weight": 2.0},
+      {"term": "personalization", "weight": 2.5},
+      {"term": "RecSys", "weight": 3.0},
+      {"term": "SIGIR", "weight": 1.5},
+      {"term": "WSDM", "weight": 1.5},
+      {"term": "KDD", "weight": 1.0},
+      {"term": "CIKM", "weight": 1.0}
+    ],
+    "llm_hotspots": [
+      {"term": "large language model", "weight": 3.0},
+      {"term": "LLM", "weight": 3.0},
+      {"term": "reasoning", "weight": 1.5},
+      {"term": "agent", "weight": 1.5},
+      {"term": "RAG", "weight": 2.0},
+      {"term": "retrieval augmented generation", "weight": 2.0},
+      {"term": "alignment", "weight": 1.5},
+      {"term": "post-training", "weight": 1.5},
+      {"term": "reinforcement learning", "weight": 1.5},
+      {"term": "multimodal", "weight": 1.2},
+      {"term": "long context", "weight": 1.2},
+      {"term": "evaluation", "weight": 1.0}
+    ],
+    "data_centric_ai": [
+      {"term": "data-centric", "weight": 4.0},
+      {"term": "data quality", "weight": 3.0},
+      {"term": "data valuation", "weight": 3.0},
+      {"term": "data selection", "weight": 3.0},
+      {"term": "data curation", "weight": 3.0},
+      {"term": "synthetic data", "weight": 2.5},
+      {"term": "dataset distillation", "weight": 2.5},
+      {"term": "benchmark", "weight": 1.5},
+      {"term": "preference data", "weight": 2.0},
+      {"term": "data contamination", "weight": 2.0},
+      {"term": "annotation", "weight": 1.5}
+    ],
+    "ai_social_tools": [
+      {"term": "open source", "weight": 1.5},
+      {"term": "GitHub", "weight": 1.5},
+      {"term": "product", "weight": 1.5},
+      {"term": "launch", "weight": 1.5},
+      {"term": "tool", "weight": 2.0},
+      {"term": "agent", "weight": 1.2},
+      {"term": "workflow", "weight": 1.0},
+      {"term": "developer tool", "weight": 2.0},
+      {"term": "inference", "weight": 1.2},
+      {"term": "serving", "weight": 1.2},
+      {"term": "model release", "weight": 2.0}
+    ]
+  }
+}
+

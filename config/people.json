@@ -1,0 +1,122 @@
+{
+  "researchers": [
+    {
+      "name": "Yongfeng Zhang",
+      "institution": "Rutgers University",
+      "aliases": ["Yongfeng Zhang", "Rutgers", "Web Intelligent Systems Lab"]
+    },
+    {
+      "name": "Li Chen",
+      "institution": "Hong Kong Baptist University",
+      "aliases": ["Li Chen", "HKBU", "Hong Kong Baptist University"]
+    },
+    {
+      "name": "Julian McAuley",
+      "institution": "UC San Diego",
+      "aliases": ["Julian McAuley", "UCSD", "McAuley Lab"]
+    },
+    {
+      "name": "Xiangnan He",
+      "institution": "University of Science and Technology of China",
+      "aliases": ["Xiangnan He", "USTC", "Data Lab", "Hefei"]
+    },
+    {
+      "name": "Tat-Seng Chua",
+      "institution": "National University of Singapore",
+      "aliases": ["Tat-Seng Chua", "Tat Seng Chua", "NUS", "Sea-NExT"]
+    },
+    {
+      "name": "Chao Huang",
+      "institution": "The University of Hong Kong",
+      "aliases": ["Chao Huang", "HKU", "HKUDS", "Hong Kong University Data Science Lab"]
+    },
+    {
+      "name": "Craig Macdonald",
+      "institution": "University of Glasgow",
+      "aliases": ["Craig Macdonald", "Glasgow", "Terrier Team"]
+    },
+    {
+      "name": "Maarten de Rijke",
+      "institution": "University of Amsterdam",
+      "aliases": ["Maarten de Rijke", "de Rijke", "UvA", "IRLab Amsterdam"]
+    },
+    {
+      "name": "Joseph Konstan",
+      "institution": "University of Minnesota",
+      "aliases": ["Joseph Konstan", "GroupLens", "MovieLens"]
+    },
+    {
+      "name": "Alexander Tuzhilin",
+      "institution": "New York University",
+      "aliases": ["Alexander Tuzhilin", "Tuzhilin", "NYU Stern"]
+    },
+    {
+      "name": "Barry Smyth",
+      "institution": "University College Dublin",
+      "aliases": ["Barry Smyth", "UCD", "Insight Centre"]
+    },
+    {
+      "name": "Dietmar Jannach",
+      "institution": "University of Klagenfurt",
+      "aliases": ["Dietmar Jannach", "Jannach", "Klagenfurt"]
+    },
+    {
+      "name": "Minmin Chen",
+      "institution": "Google DeepMind",
+      "aliases": ["Minmin Chen", "Google DeepMind", "YouTube recommendation"]
+    },
+    {
+      "name": "Mounia Lalmas",
+      "institution": "Spotify",
+      "aliases": ["Mounia Lalmas", "Spotify Research"]
+    },
+    {
+      "name": "Yong Li",
+      "institution": "Tsinghua University",
+      "aliases": ["Yong Li", "Tsinghua", "THUAI"]
+    }
+  ],
+  "industry_teams": [
+    {
+      "group": "Google / YouTube / DeepMind",
+      "aliases": ["Google Research", "YouTube", "YouTube Recommendations", "DeepMind", "Google DeepMind"]
+    },
+    {
+      "group": "Meta",
+      "aliases": ["Meta AI", "FAIR", "Facebook", "Instagram ranking"]
+    },
+    {
+      "group": "Netflix",
+      "aliases": ["Netflix", "Netflix Technology Blog", "Metaflow"]
+    },
+    {
+      "group": "Alibaba / Ant",
+      "aliases": ["Alibaba", "Aliyun", "Ant Group", "Taobao", "Tmall", "Alipay"]
+    },
+    {
+      "group": "Huawei Noah / SJTU",
+      "aliases": ["Huawei Noah", "Noah's Ark Lab", "Shanghai Jiao Tong University", "SJTU"]
+    },
+    {
+      "group": "Kuaishou",
+      "aliases": ["Kuaishou", "Kwai", "Kuaishou Technology"]
+    },
+    {
+      "group": "Microsoft / Bing / LinkedIn",
+      "aliases": ["Microsoft Research", "Bing", "LinkedIn", "MSR"]
+    },
+    {
+      "group": "ByteDance / TikTok",
+      "aliases": ["ByteDance", "TikTok", "Douyin", "Toutiao"]
+    },
+    {
+      "group": "Amazon",
+      "aliases": ["Amazon", "Amazon Science", "Amazon Ads", "Amazon Music"]
+    },
+    {
+      "group": "Spotify",
+      "aliases": ["Spotify", "Spotify Research"]
+    }
+  ]
+}
+
