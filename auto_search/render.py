@@ -312,7 +312,7 @@ def truncate_md(text: str, limit: int) -> str:
 
 def report_public_url(date_text: str) -> str:
     base_url = os.environ.get("PAGES_BASE_URL", "").rstrip("/")
+    reports_path = os.environ.get("PAGES_REPORTS_PATH", "docs/reports").strip("/")
     if base_url:
-        return f"{base_url}/reports/{date_text}/"
+        return f"{base_url}/{reports_path}/{date_text}/"
     return f"docs/reports/{date_text}/index.html"
-

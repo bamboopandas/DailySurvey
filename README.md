@@ -20,10 +20,13 @@
 FEISHU_BOT_WEBHOOK=
 FEISHU_BOT_SIGN_SECRET=
 PAGES_BASE_URL=
+PAGES_REPORTS_PATH=docs/reports
 SEMANTIC_SCHOLAR_API_KEY=
 ```
 
 `FEISHU_BOT_WEBHOOK` 是必需项。`FEISHU_BOT_SIGN_SECRET` 和 `SEMANTIC_SCHOLAR_API_KEY` 是可选项。`PAGES_BASE_URL` 建议配置为 GitHub Pages 站点根地址，例如 `https://USER.github.io/REPO`。
+
+如果 GitHub Pages source 选择仓库根目录，保留 `PAGES_REPORTS_PATH=docs/reports`；如果 source 选择 `/docs` 目录，则改成 `PAGES_REPORTS_PATH=reports`。
 
 ## 本地命令
 
@@ -55,7 +58,9 @@ python3 -m auto_search send-feishu runs/$(date +%F)/feishu_card.json --brief run
 
 ## GitHub Pages
 
-报告输出到 `docs/`，页面包含 `noindex,nofollow`。初始化 remote 并开启 GitHub Pages 后，把 Pages Source 指向仓库的 `docs/` 目录。
+报告输出到 `docs/`，页面包含 `noindex,nofollow`。当前默认兼容 GitHub Pages source 选择仓库根目录，此时日报地址形如 `https://USER.github.io/REPO/docs/reports/YYYY-MM-DD/`。
+
+如果你把 Pages Source 改成 `/docs` 目录，则 `.env` 中设置 `PAGES_REPORTS_PATH=reports`，日报地址会变成 `https://USER.github.io/REPO/reports/YYYY-MM-DD/`。
 
 如果当前目录还没有 git 仓库：
 

@@ -30,6 +30,8 @@
    python3 -m auto_search render runs/YYYY-MM-DD/brief.json
    ```
 
+   注意：`render` 会根据 `.env` 中的 `PAGES_BASE_URL` 和 `PAGES_REPORTS_PATH` 生成飞书“阅读全文”链接。当前仓库根目录发布时应使用 `PAGES_REPORTS_PATH=docs/reports`。
+
 5. 如果配置了 `FEISHU_BOT_WEBHOOK`，运行：
 
    ```bash
