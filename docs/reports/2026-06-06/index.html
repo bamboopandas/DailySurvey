@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>每日 AI / 推荐系统情报简报 - 2026-06-06</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f7f8fa;
+      --panel: #ffffff;
+      --text: #15171a;
+      --muted: #5f6875;
+      --line: #dfe4ea;
+      --accent: #0f766e;
+    }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    main {
+      max-width: 1040px;
+      margin: 0 auto;
+      padding: 40px 20px 72px;
+    }
+    header {
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 28px;
+      padding-bottom: 24px;
+    }
+    h1 {
+      font-size: clamp(28px, 4vw, 44px);
+      line-height: 1.18;
+      margin: 0 0 8px;
+    }
+    .date, .muted {
+      color: var(--muted);
+    }
+    section {
+      margin-top: 28px;
+      padding-top: 8px;
+    }
+    h2 {
+      font-size: 24px;
+      margin: 0 0 12px;
+    }
+    .trend {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 18px 20px;
+    }
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 14px;
+      margin-top: 16px;
+    }
+    article {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 16px;
+    }
+    h3 {
+      font-size: 17px;
+      line-height: 1.35;
+      margin: 0 0 10px;
+    }
+    a {
+      color: var(--accent);
+      text-decoration-thickness: .08em;
+      text-underline-offset: .18em;
+    }
+    ul {
+      padding-left: 1.2em;
+    }
+    .label {
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <h1>每日 AI / 推荐系统情报简报</h1>
+      <div class="date">2026-06-06</div>
+      <p>今天 48 小时候选集中最有新闻性的变化，是推荐系统论文把 LLM agent 与生成式推荐从概念讨论落到线上约束：Tubi 冷启动、QueryAgent-R1、OneReason 和 ANCHOR 分别把新内容入库、查询到商品闭环、推荐推理链和隐式反馈噪声写成可评测问题。同一批 arXiv、GitHub 和 Hacker News 候选还显示，LLM agent 的记忆、协作、模型路由、隐私和工程栈正在被拆成单独指标，而不是只看最终答案。对推荐系统研究的直接影响，是下一轮实验需要同时报告 item embedding 冷启动、用户长期记忆、候选约束、奖励投机、数据审计与上线权限，而不能只比较点击率或 NDCG。Semantic Scholar 因缺 API key 未参与，少数 RSS 和 OpenReview 查询失败；今天四个板块候选均超过 5 条，未使用手工补充，后续应继续观察这些论文是否放出代码、线上复现实验或同行讨论。</p>
+    </header>
+    <section id="recsys_research">
+  <h2>推荐系统研究动态</h2>
+  <div class="trend"><p>推荐系统板块今天真正值得注意的，是多篇候选都在把 LLM 与 agent 技术拉回推荐系统的老约束：冷启动要立即可服务，查询推荐要看商品转化，生成式推荐要能感知 item token，隐式反馈要处理噪声，技能选择要适配本地偏好。证据主要来自 6 月 4 日 arXiv 新稿，其中 Tubi 和 QueryAgent-R1 都给出生产场景叙述，OneReason 明确连接短视频、直播、广告和电商。读者应关心这些工作，因为它们把“LLM 做推荐”从演示式生成推进到可上线、可评测、可约束的工程问题。</p><ul><li>Tubi 冷启动论文把新内容推荐放进生产召回约束：内容侧 embedding 不能依赖交互历史，却要落入协同过滤可用的向量空间。</li><li>QueryAgent-R1 把查询推荐从“建议一个像样的 query”改为“建议一个能检索到合适商品并提升转化的 query”，线上 A/B 报告 Query CTR 和 guided CVR 同时提升。</li><li>OneReason 把生成式推荐的 reasoning 问题拆成 itemic token perception 和用户兴趣 cognition，承认普通 thinking mode 暂未显示优势。</li><li>ANCHOR 用 agent 主动构造噪声标签，给隐式反馈去噪提供监督学习路径，但需要后续验证模拟噪声是否贴近真实用户行为。</li><li>本地隐式偏好先验论文把 agent 技能选择变成端侧轻量推荐问题，适合关注隐私、低延迟和个人化工具调用的研究者。</li></ul></div>
+  <div class="cards"><article>
+  <h3><a href="https://arxiv.org/abs/2606.06225v1" target="_blank" rel="noopener noreferrer">Shallow-RHS：Tubi 场景下的冷启动内容推荐图架构</a></h3>
+  <p>这篇来自 Tubi 场景的论文把内容冷启动表述为时间二部图上的归纳式 graph completion。Shallow-RHS 让设备侧使用观看历史消息传递，内容侧只用 intrinsic feature 生成浅层 embedding，从而让新内容入库后可以直接进入近邻检索。</p>
+  <p><strong>为什么值得看：</strong>它讨论的不是离线 toy cold-start，而是生产召回接口：新内容必须立刻有独立 embedding，设备 embedding 还要适配 ANN 检索。论文称大规模线上实验在内容冷启动参与度、推广速度、曝光获取和设备冷启动参与度上都有相对提升。</p>
+  <p><strong>对推荐系统的启发：</strong>可把新物品 embedding 的生成拆成两个约束：服务端必须立即可检索，训练端又要把内容特征对齐到协同过滤空间。离线评测应加入内容入库时间、warm surrogate neighbor 质量和上线后曝光速度。</p>
+  <div class="label">引用：<a href="https://arxiv.org/abs/2606.06225v1" target="_blank" rel="noopener noreferrer">arXiv</a></div>
+</article>
+<article>
+  <h3><a href="https://arxiv.org/abs/2606.05671v1" target="_blank" rel="noopener noreferrer">QueryAgent-R1：把查询生成和商品检索绑在一起优化</a></h3>
+  <p>QueryAgent-R1 面向电商查询推荐，指出只优化 query-level relevance 会造成 CTR 高但产品转化低。它用 memory-augmented agent 和 chain-of-retrieval 优化，让生成查询先落到真实商品检索，再用一致性奖励联合优化查询相关性和下游参与度。</p>
+  <p><strong>为什么值得看：</strong>论文报告在自有工业数据和公开数据上优于强基线，并在大规模生产平台 A/B 测试中提升 Query CTR 2.9%、guided CVR 3.1%。这给 LLM 搜索推荐一个清晰信号：生成得像搜索词还不够，要能带来可购买商品。</p>
+  <p><strong>对推荐系统的启发：</strong>查询推荐不应只优化 query CTR，还要把真实库存检索、商品匹配和下游 CVR 写进 reward。对电商推荐而言，生成 query 的 agent 必须能用检索结果反证自己的建议。</p>
+  <div class="label">引用：<a href="https://arxiv.org/abs/2606.05671v1" target="_blank" rel="noopener noreferrer">arXiv</a></div>
+</article>
+<article>
+  <h3><a href="https://arxiv.org/abs/2606.06260v1" target="_blank" rel="noopener noreferrer">OneReason：给生成式推荐补上 item token 的感知与推理</a></h3>
+  <p>OneReason 技术报告来自 OneRec 系列，明确说 OneRec 家族已部署在短视频、直播、广告和电商等真实服务中。报告指出，只有 item token 的生成式推荐难以构造有意义 CoT，因此提出 itemic token perception、三层 cognition-enhanced CoT 和 specialize-then-unify RL 训练配方。</p>
+  <p><strong>为什么值得看：</strong>这不是单纯把 LLM reasoning 迁移到推荐，而是指出推荐的“思考链”必须围绕物品语义和用户兴趣组织。报告也提醒读者，早期 thinking mode 未显示出优势，说明这个方向仍需要严肃验证。</p>
+  <p><strong>对推荐系统的启发：</strong>生成式推荐的 CoT 不能照搬自然语言推理，应先解决 itemic token 的语义 grounding，再让模型把用户行为序列重组为潜在兴趣点。后续可以测试 thinking mode 是否真的改善长序列、跨域和广告场景。</p>
+  <div class="label">引用：<a href="https://arxiv.org/abs/2606.06260v1" target="_blank" rel="noopener noreferrer">arXiv</a></div>
+</article>
+<article>
+  <h3><a href="https://arxiv.org/abs/2606.05621v1" target="_blank" rel="noopener noreferrer">ANCHOR：用 agent 造噪声标签来做推荐去噪</a></h3>
+  <p>ANCHOR 把推荐去噪从启发式过滤改写为 Creation-Recognition 范式：先由 recommender-in-the-loop agent 主动创造带标签噪声，再训练识别器去检测真实交互数据中的噪声。论文区分 out-of-preference noise 和 boundary-adjacent noise，并用对抗边界细化生成更难样本。</p>
+  <p><strong>为什么值得看：</strong>隐式反馈最大的老问题是缺少“这次点击其实不是偏好”的标签。ANCHOR 的价值在于把 LLM-as-User 思路引入噪声监督，但它也把新的风险暴露出来：模拟用户是否会把模型偏见再注入推荐训练。</p>
+  <p><strong>对推荐系统的启发：</strong>可以用 agent 生成带标签的噪声交互，训练可复用的 noise recognizer，再在召回或重排前过滤误点、边界兴趣和被动曝光带来的伪偏好。关键要单独验证生成噪声与真实噪声分布是否一致。</p>
+  <div class="label">引用：<a href="https://arxiv.org/abs/2606.05621v1" target="_blank" rel="noopener noreferrer">arXiv</a></div>
+</article>
+<article>
+  <h3><a href="https://arxiv.org/abs/2606.05828v1" target="_blank" rel="noopener noreferrer">Statistical Priors for Implicit Preferences：本地偏好先验调制技能选择</a></h3>
+  <p>这篇论文讨论本地个人 agent 如何在大量外部技能中学习隐式偏好。作者把统计偏好学习与语义意图解析解耦，用本地统计结果调制远端 LLM 的技能选择，并称实验取得最低 cumulative regret 和最高 test accuracy。</p>
+  <p><strong>为什么值得看：</strong>当 agent 技能数量增加，工具选择会变成推荐系统问题；但本地部署又限制了集中式复杂模型。这项工作给出了一个务实方向：把偏好统计留在端侧，把语言理解交给模型。</p>
+  <p><strong>对推荐系统的启发：</strong>个人 agent 的技能选择可以看成轻量推荐问题：本地统计 prior 负责个体偏好，远端 LLM 负责语义意图解析。类似结构可用于端侧重排、工具推荐和隐私敏感的个性化召回。</p>
+  <div class="label">引用：<a href="https://arxiv.org/abs/2606.05828v1" target="_blank" rel="noopener noreferrer">arXiv</a></div>
+</article></div>
+</section>
+<section id="llm_hotspots">
+  <h2>LLM 热点论文</h2>
+  <div class="trend"><p>LLM 热点今天的主线不是单个大模型发布，而是 agent 和长上下文系统的可评测性、可路由性与安全边界。arXiv 候选覆盖多 agent 协作评测、长上下文稀疏注意力、专家模型路由、训练数据记忆审计和多文化价值多样性，证据都来自 6 月 4 日新稿。读者要关心这些条目，是因为推荐系统正在把 LLM 放进用户会话、工具调用和内容治理链路；一旦模型会路由、会协作、会记忆，也必须能解释其成本、隐私和群体影响。</p><ul><li>CollabSim 把多 agent 评测从最终任务成功率推进到共同基础、共享理解、激励平衡和误差修复等协作能力。</li><li>CLSA 把长上下文推理的 routing 开销纳入架构设计，在 KV-sharing 之外共享 token routing index，论文报告 128K context 下显著吞吐提升。</li><li>IR3DE 显示简单线性路由器也可服务动态专家 LLM 池，适合关注成本、延迟和模型可替换性的团队。</li><li>PropMe 要求记忆审计同时报告最坏抽取能力和普通交互泄露倾向，这对训练数据合规比单一 attack score 更有解释力。</li><li>Value diversity 论文提醒多 agent 社会模拟可能在互动中损失文化多样性，推荐和内容治理不能只看单体 alignment。</li></ul></div>
+  <div class="cards"><article>
+  <h3><a href="https://arxiv.org/abs/2606.06399v1" target="_blank" rel="noopener noreferrer">CollabSim：用 CSCW 方法评测 LLM 多 agent 协作能力</a></h3>
+  <p>CollabSim 用 CSCW 理论定义 LLM 多 agent 的协作能力，包括建立共同基础、维护共享任务理解、平衡个体与集体目标、修复协作偏差。论文在四个 LLM 上做受控多 agent 实验，试图把失败归因从单体能力不足转向协作机制不足。</p>
+  <p><strong>为什么值得看：</strong>很多 agent 系统失败不是因为某个模型不会解题，而是协作中没有形成共同上下文。对长流程任务而言，这类过程评测比最终答案分数更接近线上问题。</p>
+  <p><strong>对推荐系统的启发：</strong>多 agent 推荐、购物助理和内容运营 agent 需要评测“共同理解”和“偏差修复”，不能只看最终推荐列表。CollabSim 的 action-level probing 可迁移到多角色重排、审核和客服协作。</p>
+  <div class="label">引用：<a href="https://arxiv.org/abs/2606.06399v1" target="_blank" rel="noopener noreferrer">arXiv</a></div>
+</article>
+<article>
+  <h3><a href="https://arxiv.org/abs/2606.06467v1" target="_blank" rel="noopener noreferrer">You Only Index Once：跨层稀疏注意力共享 routing index</a></h3>
+  <p>CLSA 基于 KV-sharing 架构，主张“不只共享 KV cache，也共享 routing index”。一个 indexer 只计算一次 token-level top-k 选择，再在多层复用，以同时改善 prefill、KV 存储和长上下文 decoding。</p>
+  <p><strong>为什么值得看：</strong>论文报告在 128K context 下最高 7.6 倍 decoding speedup 和 17.1 倍总体吞吐提升。长上下文推理已经进入成本工程阶段，稀疏注意力如果不能端到端加速，产品价值会被 routing 开销吃掉。</p>
+  <p><strong>对推荐系统的启发：</strong>推荐中的长上下文用户历史、会话轨迹和候选解释会持续推高 KV cache 成本。共享 routing index 的思路可启发长序列推荐模型在跨层检索、缓存和解码阶段联合优化。</p>
+  <div class="label">引用：<a href="https://arxiv.org/abs/2606.06467v1" target="_blank" rel="noopener noreferrer">arXiv</a></div>
+</article>
+<article>
+  <h3><a href="https://arxiv.org/abs/2606.06098v1" target="_blank" rel="noopener noreferrer">IR3DE：用线性路由器选择领域专家 LLM</a></h3>
+  <p>IR3DE 是一个基于 ridge regression 的 domain expert LLM 路由器，目标是在不同领域专家模型之间做便宜、快速的选择。论文称它在两个 causal language modeling 设置中接近基线，在领域推理设置中 normalized performance 达到 98.4%，并支持新增或移除专家而不从头训练路由器。</p>
+  <p><strong>为什么值得看：</strong>模型路由正在从“强弱模型省钱”转向“动态专家池服务”。简单线性方法若足够接近复杂路由器，工程上会更容易部署、调试和做预算控制。</p>
+  <p><strong>对推荐系统的启发：</strong>模型路由本质上是对 prompt、成本和能力的推荐。IR3DE 的线性、可增删专家设定适合在线推荐系统中的动态模型池，比如把简单请求交给便宜模型，把高价值请求交给专家模型。</p>
+  <div class="label">引用：<a href="https://arxiv.org/abs/2606.06098v1" target="_blank" rel="noopener noreferrer">arXiv</a></div>
+</article>
+<article>
+  <h3><a href="https://arxiv.org/abs/2606.06286v1" target="_blank" rel="noopener noreferrer">PropMe：把训练数据记忆分成可抽取性和泄露倾向</a></h3>
+  <p>PropMe 重新审视 LLM 训练数据记忆，认为现有评估常测“能否被迫泄露”，而不是普通使用中是否会泄露。作者提出 propensity-aware memorization 评估，并用 SimpleTrace 将生成归因到大规模训练语料，比较 verbatim、near-verbatim 和 propensity-transformed 指标。</p>
+  <p><strong>为什么值得看：</strong>论文发现 prefix attack 能诱发更强记忆信号，但普通提示下 propensity overall 较低。这个区分对安全评测很重要：合规风险既看最坏攻击，也看日常产品路径。</p>
+  <p><strong>对推荐系统的启发：</strong>推荐系统也应区分最坏情况下能否泄露训练样本，与普通用户交互中是否倾向泄露。对个性化 LLM 推荐，隐私审计要同时报告可抽取性和自然使用下的泄露倾向。</p>
+  <div class="label">引用：<a href="https://arxiv.org/abs/2606.06286v1" target="_blank" rel="noopener noreferrer">arXiv</a></div>
+</article>
+<article>
+  <h3><a href="https://arxiv.org/abs/2606.05985v1" target="_blank" rel="noopener noreferrer">Beyond Alignment：多文化 agent 系统需要评估价值多样性</a></h3>
+  <p>这篇论文提出把 value diversity 作为多文化 agent 系统的系统级评估轴，而不只看单个 agent 是否对齐某个文化。作者用 World Values Survey 评估 19 个文化和 18 个 backbone model，发现 diversity 与 alignment 基本不相关，交互还会推动 agent 趋向共识。</p>
+  <p><strong>为什么值得看：</strong>如果 agent 社会一互动就把少数视角压成共识，那么它在内容治理、公共决策或多文化产品中会给出看似稳定但实际单一的答案。</p>
+  <p><strong>对推荐系统的启发：</strong>多文化推荐和社群模拟不能只追求单个用户画像对齐，还要看系统层面的价值多样性是否被重排和交互机制压平。推荐评测可加入群体多样性保持指标。</p>
+  <div class="label">引用：<a href="https://arxiv.org/abs/2606.05985v1" target="_blank" rel="noopener noreferrer">arXiv</a></div>
+</article></div>
+</section>
+<section id="data_centric_ai">
+  <h2>Data-centric AI</h2>
+  <div class="trend"><p>Data-centric AI 板块今天的重点不是某个更大的数据集，而是五种数据操作被具体化：合成数据工具、低资源语料审计、弱标注 in-context 学习、工业数据飞轮和几何感知数据凝缩。证据来自 GitHub 更新与 6 月 4 日 arXiv 新稿，候选虽少于 LLM 板块但足够集中。推荐系统读者要关心这些工作，因为推荐数据的核心痛点也是数据缺口、偏差、噪声、长尾和反馈闭环；模型改进往往受制于这些数据工程细节，而不是单纯更换 backbone。</p><ul><li>DataDesigner 代表合成数据工具化方向，但推荐系统使用时必须补上 seed provenance、生成策略记录和真实日志校验。</li><li>Lombard 语料审计显示 web-scraped 数据的数量幻觉很严重，低资源场景要先做语言识别和代表性审计。</li><li>In-Context MIL 用合成 bag 任务训练少标注学习器，适合只有会话级、群体级或集合级标签的推荐问题。</li><li>物流 data flywheel 论文把部署日志、world model 监督和策略反馈放进一个工业闭环，可类比推荐系统的曝光到反馈再训练流程。</li><li>GADC 将数据凝缩从“选少量样本”提升为“保留分布几何”，对多模态推荐目录压缩和长尾覆盖有直接启发。</li></ul></div>
+  <div class="cards"><article>
+  <h3><a href="https://github.com/NVIDIA-NeMo/DataDesigner" target="_blank" rel="noopener noreferrer">NVIDIA NeMo DataDesigner：面向合成数据生成的工具化入口</a></h3>
+  <p>NVIDIA-NeMo/DataDesigner 是一个用于从零或基于 seed data 生成高质量合成数据的开源工具。候选显示该仓库 2026 年 6 月 5 日仍在更新，GitHub 指标约 1961 stars、179 forks。</p>
+  <p><strong>为什么值得看：</strong>数据生成正在从脚本和 prompt 集合变成可复用工具。对研究团队而言，关键不只是能生成样本，而是能把 seed、生成策略和质量过滤变成可复现实验资产。</p>
+  <p><strong>对推荐系统的启发：</strong>可用这类工具为稀缺推荐场景生成 seed-based 训练样本，例如长尾商品问答、冷启动用户画像、异常反馈解释，再用真实日志做分布校验。</p>
+  <div class="label">引用：<a href="https://github.com/NVIDIA-NeMo/DataDesigner" target="_blank" rel="noopener noreferrer">GitHub</a></div>
+</article>
+<article>
+  <h3><a href="https://arxiv.org/abs/2606.06349v1" target="_blank" rel="noopener noreferrer">Lombard 语料审计：网页抓取的“数据丰富”可能是假象</a></h3>
+  <p>这篇论文手工审计 Lombard 低资源语言的平行和单语语料，发现所谓大量 web-scraped 数据包含严重语言误识别、模板文本和非语言噪声。作者还指出有效语料内部存在正字法冲突和地域代表性偏差，高质量数据明显偏向 Western Lombard。</p>
+  <p><strong>为什么值得看：</strong>这给 data-centric AI 一个朴素但重要的提醒：数据规模并不等于数据可用。低资源语言场景尤其需要 variety-aware、community-driven curation。</p>
+  <p><strong>对推荐系统的启发：</strong>多语言、多地域推荐的语料不能只按网页数量估计覆盖度。需要做语言识别、样式去重、社区校验和方言分布审计，否则冷门语种用户画像会被主流变体覆盖。</p>
+  <div class="label">引用：<a href="https://arxiv.org/abs/2606.06349v1" target="_blank" rel="noopener noreferrer">arXiv</a></div>
+</article>
+<article>
+  <h3><a href="https://arxiv.org/abs/2606.06458v1" target="_blank" rel="noopener noreferrer">In-Context MIL：用合成 bag 数据预训练弱标注学习器</a></h3>
+  <p>In-Context Multiple Instance Learning 面向只有 bag-level supervision 的低标注问题。作者用 Perceiver-style 架构在合成 bag data 上预训练，让模型在推理时只需一次 forward pass、无需梯度更新，就能从少量 labeled bags 适配新任务。</p>
+  <p><strong>为什么值得看：</strong>论文称混合多种 synthetic data generator 的模型在 12 个 MIL benchmark 上平均表现最好，超过需要 task-specific training 的监督基线。它把合成数据从补样本变成了提供归纳偏置的训练环境。</p>
+  <p><strong>对推荐系统的启发：</strong>推荐系统里很多监督是 bag-level 的，如一个会话、一个家庭账号或一个营销人群包。In-context MIL 提供了在少量包级标签下做快速适配的思路，可用于弱标注用户群画像和内容集合分类。</p>
+  <div class="label">引用：<a href="https://arxiv.org/abs/2606.06458v1" target="_blank" rel="noopener noreferrer">arXiv</a></div>
+</article>
+<article>
+  <h3><a href="https://arxiv.org/abs/2606.05960v1" target="_blank" rel="noopener noreferrer">物流具身智能的数据飞轮：从运营日志到策略改进</a></h3>
+  <p>这篇论文以物流具身智能为例，提出把日常运营转换为可复用数据资产的 data flywheel。框架用 World Models 为长尾包裹操作生成监督，并把部署反馈回流到策略改进；初步结果包括 WM-DAgger，用 world model 合成 OOD recovery data 来增强 imitation learning。</p>
+  <p><strong>为什么值得看：</strong>它把 data-centric AI 放进工业闭环，而不是停在离线数据集清洗。对于任何依赖线上反馈的系统，数据如何被收集、组织、再利用，决定模型能否持续改进。</p>
+  <p><strong>对推荐系统的启发：</strong>推荐系统也有类似飞轮：曝光、点击、停留、退订、投诉和库存变化都应回流为可复用训练资产。物流机器人案例提醒研究者把部署日志、未标注行为和人工示范统一进数据治理。</p>
+  <div class="label">引用：<a href="https://arxiv.org/abs/2606.05960v1" target="_blank" rel="noopener noreferrer">arXiv</a></div>
+</article>
+<article>
+  <h3><a href="https://arxiv.org/abs/2606.05883v1" target="_blank" rel="noopener noreferrer">GADC：为扩散模型训练选择几何感知的压缩数据集</a></h3>
+  <p>GADC 重新定义扩散模型训练的数据集凝缩问题：不是生成低保真合成样本，而是从真实数据中选择一个保留分布几何结构的 compact subset。方法使用 one-sided partial optimal transport，并配合轻量统计和语义一致性正则；论文标注为 ICML 2026，代码地址也在摘要中给出。</p>
+  <p><strong>为什么值得看：</strong>当训练预算受限，数据子集选择不再只是抽样问题。GADC 强调保留分布几何结构，对任何需要小数据代表大分布的生成模型训练都有参考价值。</p>
+  <p><strong>对推荐系统的启发：</strong>长尾内容推荐常需要用小样本代表大目录。几何感知的 subset selection 可启发目录压缩、训练样本选择和多模态 item embedding 训练，避免只保留高频样本导致分布塌缩。</p>
+  <div class="label">引用：<a href="https://arxiv.org/abs/2606.05883v1" target="_blank" rel="noopener noreferrer">arXiv</a></div>
+</article></div>
+</section>
+<section id="ai_social_tools">
+  <h2>AI 社媒/工具/产品动态</h2>
+  <div class="trend"><p>AI 社媒/工具板块今天最值得注意的，是开发者讨论和 GitHub 更新共同指向一个更现实的 agent 工程栈：先有工作流平台，再有上下文压缩、测试红队和权限感知的数据连接。证据包括 HN 一个 113 points、106 comments 的 AI dev stack 讨论，以及 Dify、headroom、promptfoo、Airbyte Agent SDK 等仓库更新和热度指标。推荐系统读者应关心这些工具，因为 agentic recommender 不只是排序模型；它还要接业务系统、压缩上下文、测试失败模式，并把用户和工具行为记录成可学习的数据。</p><ul><li>Hacker News 今日高讨论 Ask HN 聚焦 AI dev stack/workflow，说明开发者关注点已从单个模型转向工具组合和日常流程。</li><li>Dify、headroom、promptfoo 分别代表工作流编排、上下文压缩和测试红队三个生产化组件，都是 agent 产品落地时会遇到的基础层。</li><li>headroom 的卖点是把工具输出、日志、文件和 RAG chunk 在进入 LLM 前压缩，提示上下文预算正在成为 agent 体验和成本的共同约束。</li><li>promptfoo 的 CI/CD 叙事说明 AI 应用评测正在向软件工程流程靠拢，推荐系统中的 LLM 功能也需要同样的回归测试。</li><li>Airbyte Agent SDK 虽然热度不高，但 permission-aware 外部系统访问是企业 agent 从演示走向可上线流程的关键条件。</li></ul></div>
+  <div class="cards"><article>
+  <h3><a href="https://news.ycombinator.com/item?id=48413629" target="_blank" rel="noopener noreferrer">Ask HN：开发者正在晒自己的 AI dev stack 与 workflow</a></h3>
+  <p>Hacker News 上的 Ask HN: What is your (AI) dev tech stack / workflow? 在采集窗口内达到 113 points、106 comments。它不是论文或发布稿，而是今天开发者社群对 AI 开发栈和工作流的集中讨论信号。</p>
+  <p><strong>为什么值得看：</strong>工具市场嘈杂时，社群问答能暴露实际采用路径：人们如何组合 IDE、CLI agent、RAG、记忆、评测和版本控制。对产品和研究来说，这是比单个 launch 更接近使用现场的证据。</p>
+  <p><strong>对推荐系统的启发：</strong>真实开发者工作流讨论可以作为 agent 工具推荐的数据源：哪些工具组合被频繁提及、哪些痛点反复出现，能帮助构建面向任务的工具召回和重排。</p>
+  <div class="label">引用：<a href="https://news.ycombinator.com/item?id=48413629" target="_blank" rel="noopener noreferrer">Hacker News</a></div>
+</article>
+<article>
+  <h3><a href="https://github.com/langgenius/dify" target="_blank" rel="noopener noreferrer">Dify：agentic workflow 平台继续占据高热度 GitHub 信号</a></h3>
+  <p>Dify 在候选中仍是高热度 agentic workflow 平台，GitHub 指标约 144063 stars、22672 forks，并在 2026 年 6 月 6 日更新。项目描述将其定位为 production-ready platform for agentic workflow development。</p>
+  <p><strong>为什么值得看：</strong>当 agent 从 demo 走向业务流程，用户需要的不是单次聊天，而是可编排、可部署、可监控的工作流平台。Dify 的热度说明这类基础设施仍是开发者采用 AI 的核心入口。</p>
+  <p><strong>对推荐系统的启发：</strong>工作流平台会产生丰富的 agent trace、工具调用和用户选择数据，可用于研究“工作流推荐”：给不同任务推荐模板、节点、模型和权限配置。</p>
+  <div class="label">引用：<a href="https://github.com/langgenius/dify" target="_blank" rel="noopener noreferrer">GitHub</a></div>
+</article>
+<article>
+  <h3><a href="https://github.com/chopratejas/headroom" target="_blank" rel="noopener noreferrer">headroom：把工具输出和 RAG chunk 先压缩再喂给 LLM</a></h3>
+  <p>headroom 主打在内容到达 LLM 之前压缩工具输出、日志、文件和 RAG chunks，README 摘要称可减少 60% 到 95% tokens 且保持 same answers。候选显示该仓库约 14515 stars、923 forks。</p>
+  <p><strong>为什么值得看：</strong>agent 工具链的成本瓶颈越来越常出现在上下文，而不是模型调用次数。压缩层若可作为 library、proxy 或 MCP server 接入，会成为许多 agent 产品的默认基础件。</p>
+  <p><strong>对推荐系统的启发：</strong>推荐系统里的 RAG、解释生成和客服 agent 都会遇到上下文预算问题。可研究不同压缩策略对召回证据保真度、排序稳定性和用户解释质量的影响，而不是只看 token 节省。</p>
+  <div class="label">引用：<a href="https://github.com/chopratejas/headroom" target="_blank" rel="noopener noreferrer">GitHub</a></div>
+</article>
+<article>
+  <h3><a href="https://github.com/promptfoo/promptfoo" target="_blank" rel="noopener noreferrer">promptfoo：prompt、agent 与 RAG 测试进入 CI/CD 工作流</a></h3>
+  <p>promptfoo 是面向 prompts、agents 和 RAGs 的测试与红队工具，项目描述提到可比较 GPT、Claude、Gemini、DeepSeek 等模型，并支持命令行和 CI/CD 配置。候选显示其约 21931 stars、1939 forks，2026 年 6 月 6 日更新。</p>
+  <p><strong>为什么值得看：</strong>当 AI 功能进入生产，评测不能停在手工 spot check。能进 CI/CD 的测试和红队工具，决定团队是否能在模型、prompt 或检索库更新后及时发现回归。</p>
+  <p><strong>对推荐系统的启发：</strong>推荐系统的 LLM reranker、RAG 解释和客服 agent 需要持续评测与红队。promptfoo 这类声明式测试框架可用于建立推荐安全用例、幻觉目录用例和多模型回归测试。</p>
+  <div class="label">引用：<a href="https://github.com/promptfoo/promptfoo" target="_blank" rel="noopener noreferrer">GitHub</a></div>
+</article>
+<article>
+  <h3><a href="https://github.com/airbytehq/airbyte-agent-sdk" target="_blank" rel="noopener noreferrer">Airbyte Agent SDK：给 agent 接外部系统时强调 permission-aware</a></h3>
+  <p>Airbyte Agent SDK 将自己描述为 drop-in tools，为 AI agents 提供可靠、permission-aware 的外部系统访问。候选显示该仓库 2025 年 11 月创建，2026 年 6 月 5 日更新，当前热度仍较小但定位很具体。</p>
+  <p><strong>为什么值得看：</strong>工具调用越接近真实业务系统，权限和数据访问边界越重要。相比单纯“连更多 SaaS”，permission-aware 访问层更接近企业 agent 能否上线的门槛。</p>
+  <p><strong>对推荐系统的启发：</strong>agentic recommender 若要读取 CRM、广告、库存或工单系统，必须把权限和数据连接纳入推荐链路。可研究基于权限边界的工具过滤、候选数据源推荐和审计日志重排。</p>
+  <div class="label">引用：<a href="https://github.com/airbytehq/airbyte-agent-sdk" target="_blank" rel="noopener noreferrer">GitHub</a></div>
+</article></div>
+</section>
+  </main>
+</body>
+</html>
