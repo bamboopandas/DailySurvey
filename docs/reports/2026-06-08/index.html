@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>每日 AI / 推荐系统情报简报 - 2026-06-08</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f7f8fa;
+      --panel: #ffffff;
+      --text: #15171a;
+      --muted: #5f6875;
+      --line: #dfe4ea;
+      --accent: #0f766e;
+    }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    main {
+      max-width: 1040px;
+      margin: 0 auto;
+      padding: 40px 20px 72px;
+    }
+    header {
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 28px;
+      padding-bottom: 24px;
+    }
+    h1 {
+      font-size: clamp(28px, 4vw, 44px);
+      line-height: 1.18;
+      margin: 0 0 8px;
+    }
+    .date, .muted {
+      color: var(--muted);
+    }
+    section {
+      margin-top: 28px;
+      padding-top: 8px;
+    }
+    h2 {
+      font-size: 24px;
+      margin: 0 0 12px;
+    }
+    .trend {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 18px 20px;
+    }
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 14px;
+      margin-top: 16px;
+    }
+    article {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 16px;
+    }
+    h3 {
+      font-size: 17px;
+      line-height: 1.35;
+      margin: 0 0 10px;
+    }
+    a {
+      color: var(--accent);
+      text-decoration-thickness: .08em;
+      text-underline-offset: .18em;
+    }
+    ul {
+      padding-left: 1.2em;
+    }
+    .label {
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <h1>每日 AI / 推荐系统情报简报</h1>
+      <div class="date">2026-06-08</div>
+      <p>今天最值得注意的新情况，是推荐系统自动候选出现空档，但公开论文源里补到两类很具体的生产信号：快手把 LLM 作为广告推荐增强器服务 4 亿用户，LinkedIn 相关论文则把自然流量行为压成跨域语义 ID 用于广告排序。与此同时，LLM 论文把 agent 优化从单纯改提示或改权重，推进到黑盒测试时采样、rollout 世界模型同训和隐空间推理；Data-centric AI 的可靠信号则集中在合成数据如何选、如何估值、如何验证下游收益。对推荐系统研究来说，今天的直接影响不是“模型更大”，而是语义信号、协同 ID、合成样本和 agent 轨迹都需要被纳入可审计的排序目标。需要说明的是，Semantic Scholar key 缺失、OpenReview 某查询失败和部分 RSS 失败仍造成推荐/数据板块候选缺口，今天这两栏使用公开页面手动补源，后续要继续观察代码、A/B 细节和可复现评测是否补齐。</p>
+    </header>
+    <section id="recsys_research">
+  <h2>推荐系统研究动态</h2>
+  <div class="trend"><p>今天推荐系统板块的核心新闻不是候选热度，而是补源后看到工业推荐论文在同一周给出两个可落地接口：LLM 语义空间如何和协同 ID 对齐，以及跨域行为如何压缩成可服务的语义 ID。证据来自 arXiv 新稿中的快手 Taiji、LinkedIn 语义 ID、黑盒序列推荐蒸馏和跨域 persona 方案；读者要关心的是，这些工作都把“语言模型增强推荐”拆成可评测的训练数据、奖励权重、离散 ID 和长尾用户指标，而不是停留在泛化语义理解。</p><ul><li>自动候选中 `recsys_research` 为 0，今天推荐板块全部使用公开论文页手动补源；这意味着结论只覆盖可核验来源，不把抓取噪声写成热点。</li><li>Taiji 把 LLM 作为工业推荐增强器，通过反向构造 CoT、开放式拒绝采样和 POPO 多目标 RL，在快手广告平台自 2026 年 5 月服务 4 亿用户。</li><li>Quantizing Intent 和 SPHERE 都在处理跨域信息孤岛：一个把自然流量行为离散化成广告排序 SID，另一个用 LLM 生成语义 persona 来转移不同平台的用户行为。</li><li>BAHSD 把黑盒推荐 API 的模型抽取问题细分到头部/尾部序列信号可靠性，报告尾部用户提升超过 80%，这给推荐蒸馏的公平性评测提供了更直接的切口。</li><li>MeRa 对 latent reasoning 做了一个重要限定：如果推理不受度量空间约束，可能反而降低空间/序列预测效果；推荐模型里的隐式推理模块也应检查是否接入业务几何或序列结构。</li></ul></div>
+  <div class="cards"><article>
+  <h3><a href="https://arxiv.org/abs/2606.03866" target="_blank" rel="noopener noreferrer">Taiji：把 LLM 语义奖励和协同 ID 奖励做成 Pareto 权衡</a></h3>
+  <p>Taiji 把 LLM 定位为工业广告推荐的 enhancer，而不是替代现有排序系统。论文用反向构造的用户偏好 CoT 做 SFT，再用 Pareto Optimal Policy Optimization 动态调节 LLM 语义奖励与生产排序偏好奖励，并称已在快手广告平台服务 4 亿用户。</p>
+  <p><strong>为什么值得看：</strong>这是一条比离线 LLM4Rec 更硬的生产信号：它承认语义相关性和协同点击/转化目标会冲突，并把冲突显式写进 RL 权重更新。真正需要继续看的是 A/B 指标、成本和长期用户体验是否能公开。</p>
+  <p><strong>对推荐系统的启发：</strong>推荐研究可以借鉴 Taiji 的多目标奖励框架，把解释质量、内容语义、点击/转化、留存和安全约束分开建模，再用 Pareto 或动态权重方法检查某个指标提升是否吞掉了其他目标。</p>
+  <div class="label">引用：<a href="https://arxiv.org/abs/2606.03866" target="_blank" rel="noopener noreferrer">arXiv:2606.03866</a></div>
+</article>
+<article>
+  <h3><a href="https://arxiv.org/abs/2606.01396" target="_blank" rel="noopener noreferrer">Quantizing Intent：从自然流量行为提取跨域语义 ID 做广告排序</a></h3>
+  <p>这篇论文关注广告 CTR 里的稀疏监督问题：用户在广告上交互少，但在 feed 等自然流量里留下更密集行为。作者将自然流量行为转成跨域用户 Semantic IDs，并提出 RQ-FSQ 将预训练嵌入离散化，在约 30x 到 280x 更小存储下接近或超过稠密嵌入 AUC，冷启动用户分段最高报告 +1.522% 增益。</p>
+  <p><strong>为什么值得看：</strong>它把“跨域迁移”落到一个推荐工程可接受的对象：离散 ID、稀疏表和 CTR 目标，而不是直接把大模型 embedding 塞进线上排序。对广告和电商推荐来说，存储、召回/排序延迟和冷启动段收益比总体 AUC 更接近上线决策。</p>
+  <p><strong>对推荐系统的启发：</strong>可把多源行为 embedding 压成层级 SID，再用 prefix n-gram 稀疏表端到端训练；研究上应比较不同源行为丰富度、离散化误差和冷启动收益，而不是只报告全量用户平均指标。</p>
+  <div class="label">引用：<a href="https://arxiv.org/abs/2606.01396" target="_blank" rel="noopener noreferrer">arXiv:2606.01396</a></div>
+</article>
+<article>
+  <h3><a href="https://arxiv.org/abs/2606.03091" target="_blank" rel="noopener noreferrer">BAHSD：黑盒序列推荐蒸馏开始正面处理长尾用户</a></h3>
+  <p>BAHSD 把黑盒序列推荐 API 的本地抽取问题拆成头部序列和尾部序列的信号异质性。它用多尺度一致性探测估计 teacher 信号可靠性，再对高置信样本做动态温度 KL，对低置信样本加入 ranking consistency 和 InfoNCE，论文报告相对 teacher 最高 4.98% 增益，尾部用户超过 80% 提升。</p>
+  <p><strong>为什么值得看：</strong>黑盒推荐蒸馏常被用于降低服务成本或复刻外部能力，但一刀切蒸馏最容易牺牲长尾用户。BAHSD 的价值在于把长尾噪声和头部固化偏好作为两个不同失败模式处理。</p>
+  <p><strong>对推荐系统的启发：</strong>推荐蒸馏评测应至少分头部、腰部、尾部用户看排序一致性和多样性；训练目标也可按 teacher 置信度切换 KL、排序一致性和对比学习权重。</p>
+  <div class="label">引用：<a href="https://arxiv.org/abs/2606.03091" target="_blank" rel="noopener noreferrer">arXiv:2606.03091</a></div>
+</article>
+<article>
+  <h3><a href="https://arxiv.org/abs/2606.01783" target="_blank" rel="noopener noreferrer">SPHERE：用语义 persona 做无共享用户/物品的跨域推荐</a></h3>
+  <p>SPHERE 面向严格不共享用户和物品的跨域推荐，用 LLM 诱导共同的行为词汇，为用户生成结构化 semantic personas，并检索源域中行为相似的社区 persona。论文把这个语义信号和协同信号放进双塔结构和动态融合门，在 Amazon Books、Goodreads、Steam 上相对 NCF、SVD++、LightGCN 有稳定提升。</p>
+  <p><strong>为什么值得看：</strong>很多平台间协同建模不能依赖共享 ID，隐私和商业边界也会限制图结构对齐。SPHERE 提供的中间层是可解释的行为 persona，便于审计跨域迁移到底迁移了什么。</p>
+  <p><strong>对推荐系统的启发：</strong>可以把 LLM 生成的 persona 当作跨域桥接特征，并用动态门控控制它和本域协同信号的权重；研究上应关注 persona 的稳定性、幻觉风险和低密度目标域的收益边界。</p>
+  <div class="label">引用：<a href="https://arxiv.org/abs/2606.01783" target="_blank" rel="noopener noreferrer">arXiv:2606.01783</a></div>
+</article>
+<article>
+  <h3><a href="https://arxiv.org/abs/2606.03727" target="_blank" rel="noopener noreferrer">MeRa：隐空间推理需要被业务度量空间约束</a></h3>
+  <p>MeRa 问了一个直接问题：latent reasoning 在序列推荐里有效，那在空间预测里是否仍然有用？论文发现若推理不接入底层度量空间，效果可能低于原始 baseline；加入由 pairwise distance 学到的 metric-space bias 后，在三个空间预测基准上取得最佳 NDCG@10。</p>
+  <p><strong>为什么值得看：</strong>这提醒研究者不要把“多步隐式推理”当作免费增强。对位置、POI、短视频连续观看等推荐任务，用户行为背后的几何、时间或图结构可能必须显式进入推理模块。</p>
+  <p><strong>对推荐系统的启发：</strong>在序列推荐中插入 latent reasoning 模块时，可以测试加入时间间隔、地理距离、类目转移或社交图距离的偏置是否改变 NDCG/Recall；同时做无偏置消融，防止推理层只是在制造噪声。</p>
+  <div class="label">引用：<a href="https://arxiv.org/abs/2606.03727" target="_blank" rel="noopener noreferrer">arXiv:2606.03727</a></div>
+</article></div>
+</section>
+<section id="llm_hotspots">
+  <h2>LLM 热点论文</h2>
+  <div class="trend"><p>今天 LLM 板块值得注意的是 agent 训练和推理运行时在变得更可操作：NF-CoT 和 OPRD 分别处理推理成本与蒸馏效率，Agentic Monte Carlo 与 PaW 则把 agent 的测试时搜索和 rollout 监督具体化。证据主要来自 Hugging Face Daily Papers、alphaXiv 和 arXiv 页面；对推荐系统读者来说，这些论文的共同价值是把“智能体更会想”拆成可量化的隐状态、轨迹、世界模型和蒸馏表示，可迁移到会话推荐、解释生成和推荐调参 agent。</p><ul><li>自动候选里 Hugging Face 导航页噪声明显，因此本节只保留真实论文页或经公开搜索核验的论文。</li><li>NF-CoT 用 normalizing flows 建模连续 CoT，目标是在保留自回归/KV-cache 兼容性的同时降低显式推理 token 成本。</li><li>OPRD 把 on-policy distillation 从输出概率移到隐藏表示对齐，论文报告 1.44x 训练加速和 54% 内存节省，对小模型部署很直接。</li><li>Agentic Monte Carlo 和 PaW 都把 agent 优化绑定到轨迹：前者让黑盒 agent 通过 Sequential Monte Carlo 做测试时策略采样，后者把 RL rollout 同时作为世界模型监督。</li><li>DAR 的法律/规则推理实验提醒：工具化 agent harness 对强模型有帮助，但弱模型可能消耗更多 token 还退化，这对推荐系统里的自动解释和规则合规 agent 同样重要。</li></ul></div>
+  <div class="cards"><article>
+  <h3><a href="https://huggingface.co/papers/2606.06447" target="_blank" rel="noopener noreferrer">NF-CoT：用 normalizing flows 做连续隐空间推理</a></h3>
+  <p>NF-CoT 试图把显式文本 CoT 换成可采样的连续 thought states：在 LLM backbone 里放入 TARFlow 风格的 normalizing flow，连续思考位置由 NF head 生成，文本位置仍由 LM head 生成。论文声称在代码生成基准上优于显式 CoT 和既有 latent-reasoning baseline，同时降低中间推理成本。</p>
+  <p><strong>为什么值得看：</strong>隐空间推理如果能保留自回归生成、概率采样、KV-cache 和可计算 likelihood，就不只是压缩 CoT，而是给推理时算力分配提供新接口。需要观察的是这种连续思考是否可解释、可控，以及对非代码任务是否同样稳。</p>
+  <p><strong>对推荐系统的启发：</strong>会话推荐和解释生成可以把短期用户意图更新看成连续 latent state，而不是每步都生成自然语言解释；但上线前要比较隐式推理带来的延迟、可审计性和排序收益。</p>
+  <div class="label">引用：<a href="https://huggingface.co/papers/2606.06447" target="_blank" rel="noopener noreferrer">Hugging Face Papers</a> / <a href="https://arxiv.org/abs/2606.06447" target="_blank" rel="noopener noreferrer">arXiv:2606.06447</a></div>
+</article>
+<article>
+  <h3><a href="https://huggingface.co/papers/2606.06021" target="_blank" rel="noopener noreferrer">OPRD：把 on-policy 蒸馏提升到隐藏表示空间</a></h3>
+  <p>OPRD 指出传统 on-policy distillation 只在输出概率空间匹配 teacher，会持续面对大词表 Monte Carlo KL 的采样方差，并丢掉隐藏层结构信息。它改为在同一 rollout 上对齐学生和教师选定层的隐藏表示，论文报告在 AIME/AIMO 上缩小 student-teacher gap，并比 top-k OPD 训练快 1.44 倍、内存少 54%。</p>
+  <p><strong>为什么值得看：</strong>蒸馏是把高成本推理模型带到生产的关键路径。OPRD 的吸引力在于它不只压输出分布，而是尝试保留 teacher 的层级表示结构，适合推理模型和 agent 策略模型的小型化。</p>
+  <p><strong>对推荐系统的启发：</strong>推荐系统可把大型 LLM reranker 或解释模型蒸馏到轻量学生模型时，不只匹配最终 item 概率，也对齐中间用户意图表示、类别层级表示或多目标 reward 表示。</p>
+  <div class="label">引用：<a href="https://huggingface.co/papers/2606.06021" target="_blank" rel="noopener noreferrer">Hugging Face Papers</a> / <a href="https://arxiv.org/abs/2606.06021" target="_blank" rel="noopener noreferrer">arXiv:2606.06021</a></div>
+</article>
+<article>
+  <h3><a href="https://huggingface.co/papers/2606.05296" target="_blank" rel="noopener noreferrer">Agentic Monte Carlo：黑盒 agent 也能做 RL 风格测试时优化</a></h3>
+  <p>Agentic Monte Carlo 面向不能改参数的黑盒 LLM agent：把最优策略看成轨迹 posterior，用 Sequential Monte Carlo 采样，并学习 value function 来引导 agent，而底层模型不变。论文在 AgentGym 三类环境中报告相对 prompting baseline 有显著提升，并在测试时算力扩展下超过 GRPO。</p>
+  <p><strong>为什么值得看：</strong>许多生产 agent 只能通过 API 调用，不能做参数级 RL。AMC 把优化位置挪到测试时轨迹采样，给黑盒系统提供了比 prompt search 更原则化的控制方法。</p>
+  <p><strong>对推荐系统的启发：</strong>推荐调参 agent、商品运营 agent 或搜索重排 agent 若依赖外部闭源模型，可用类似测试时轨迹采样来优化动作序列，例如先检索、再诊断、再改召回参数，而不是只调单轮 prompt。</p>
+  <div class="label">引用：<a href="https://huggingface.co/papers/2606.05296" target="_blank" rel="noopener noreferrer">Hugging Face Papers</a> / <a href="https://arxiv.org/abs/2606.05296" target="_blank" rel="noopener noreferrer">arXiv:2606.05296</a></div>
+</article>
+<article>
+  <h3><a href="https://huggingface.co/papers/2606.02388" target="_blank" rel="noopener noreferrer">PaW：把 RL rollout 同时变成语言 agent 的世界模型监督</a></h3>
+  <p>PaW 认为语言 agent 的 RL rollout 里已经包含 action 到 next observation 的监督信号，因此可以在同一策略训练中加入 world modeling 辅助目标。它用 action-entropy-based 数据选择、noise-tolerant loss 和 reward-adaptive balancing 稳定训练，并称在三个 agentic task benchmark 上持续优于强 RL baseline。</p>
+  <p><strong>为什么值得看：</strong>agent 训练常只奖励动作结果，却不训练模型理解动作如何改变环境。PaW 的意义在于不额外增加部署推理成本，把 rollout 的状态转移信息变成训练资产。</p>
+  <p><strong>对推荐系统的启发：</strong>交互式推荐 agent 可以在用户反馈 rollout 中同时学习“推荐某类内容后用户状态如何变化”，为长期满意度、反事实排序和策略调参提供比单步点击奖励更丰富的监督。</p>
+  <div class="label">引用：<a href="https://huggingface.co/papers/2606.02388" target="_blank" rel="noopener noreferrer">Hugging Face Papers</a> / <a href="https://arxiv.org/abs/2606.02388" target="_blank" rel="noopener noreferrer">arXiv:2606.02388</a></div>
+</article>
+<article>
+  <h3><a href="https://huggingface.co/papers/2606.05009" target="_blank" rel="noopener noreferrer">DAR：规则推理里的 agent harness 有收益也有 token 代价</a></h3>
+  <p>DAR 针对 deontic reasoning，让模型按需访问长规则/法规文本，而不是一次性把所有规则塞进 prompt。论文在 DeonticBench hard subsets 上比较多种 harness，发现 agentic harness 能推动强模型表现，但弱模型在数值任务上可能退化并消耗更多 token。</p>
+  <p><strong>为什么值得看：</strong>这条结果对 agent 产品很有现实感：工具和检索并不自动提升所有模型，能力不足时还会放大成本和错误。规则密集型任务需要模型能力、工具设计和预算约束一起评估。</p>
+  <p><strong>对推荐系统的启发：</strong>推荐合规解释、广告政策审核和风控推荐都属于规则密集场景；可以为强模型开放按需检索规则的 harness，同时为弱模型设置 token budget、失败回退和规则覆盖率检查。</p>
+  <div class="label">引用：<a href="https://huggingface.co/papers/2606.05009" target="_blank" rel="noopener noreferrer">Hugging Face Papers</a> / <a href="https://arxiv.org/abs/2606.05009" target="_blank" rel="noopener noreferrer">arXiv:2606.05009</a></div>
+</article></div>
+</section>
+<section id="data_centric_ai">
+  <h2>Data-centric AI</h2>
+  <div class="trend"><p>今天 Data-centric AI 的候选覆盖仍为 0，因此本节手动核验近期公开页面，核心信号集中在合成数据选择和表格特征工程：研究者不再只问生成多少数据，而是问哪些合成样本、哪些 rubric、哪些 feature transformation 对目标模型真的有贡献。证据来自 ICLR 2026 / TMLR / arXiv 页面，包括 covariance matching、influence-guided rubric、无标注合成数据质量估计、LLM-FE 和 LiBaGS；推荐系统读者应关心，因为冷启动、长尾样本、负例构造和离线评测都依赖“数据是否真的改变排序效果”。</p><ul><li>自动采集没有给出 Data-centric AI 候选，且 OpenReview 数据选择查询报错；本节使用 OpenReview、TMLR 和 arXiv/ResearchGate 公共页面补源。</li><li>High-dimensional Analysis of Synthetic Data Selection 把合成数据收益归因到 covariance shift，并给出 covariance matching 的可操作准则。</li><li>OptimSyn 和 SynQuE 都在把合成数据质量评估从人工 rubric 或 embedding 相似度，转向对目标任务性能的影响估计。</li><li>LLM-FE 说明 LLM 在数据工作流里的位置不只是生成文本，而是可以作为 feature transformation program search 的优化器。</li><li>LiBaGS 的边界缺口分配思想适合推荐系统长尾/冷启动样本：补数据应补真实分布支持内、决策边界附近且覆盖不足的区域。</li></ul></div>
+  <div class="cards"><article>
+  <h3><a href="https://openreview.net/forum?id=Y54P2BBPPh" target="_blank" rel="noopener noreferrer">High-dimensional Analysis：合成数据选择要看 covariance shift</a></h3>
+  <p>这篇 ICLR 2026 Oral 从高维回归角度分析合成数据选择，指出影响泛化误差的关键不是简单的“接近真实分布”，而是合成数据和目标分布之间的 covariance shift；在某些条件下 matching covariance 是最优的。作者还称这一理论洞察能迁移到深度网络和生成式增强。</p>
+  <p><strong>为什么值得看：</strong>它给合成数据筛选提供了比“越真实越好”更可检验的统计准则。对数据稀缺任务，选择合成样本时要看它们是否修正训练分布的协方差结构，而不是只看均值或视觉/语义相似度。</p>
+  <p><strong>对推荐系统的启发：</strong>推荐系统里的合成用户、合成点击和冷启动物品样本，应检查它们是否补足用户-物品特征协方差，而不是只复刻热门用户均值；可把 covariance matching 加入离线样本生成诊断。</p>
+  <div class="label">引用：<a href="https://openreview.net/forum?id=Y54P2BBPPh" target="_blank" rel="noopener noreferrer">OpenReview</a></div>
+</article>
+<article>
+  <h3><a href="https://openreview.net/forum?id=vFcm5sOitq" target="_blank" rel="noopener noreferrer">OptimSyn：用下游影响而不是人工 rubric 评估合成 SFT 数据</a></h3>
+  <p>OptimSyn 针对知识密集垂直领域的 SFT 数据不足问题，反对只靠专家手写 rubric 过滤合成数据。它使用类似 influence function 的估计，衡量合成样本对目标模型目标函数的贡献，再让 rubric-specialized model 在任务反馈下优化生成/筛选标准。</p>
+  <p><strong>为什么值得看：</strong>合成数据质量经常被形式指标骗过：看起来像专家答案，不代表会改善目标模型。OptimSyn 的价值在于把 rubric 本身纳入优化闭环，以目标模型影响作为监督。</p>
+  <p><strong>对推荐系统的启发：</strong>推荐系统可把“好解释”“好负例”“好用户画像摘要”的生成 rubric 用排序指标反向校准：只有能改善 NDCG、校准、留存或安全指标的合成样本才进入训练集。</p>
+  <div class="label">引用：<a href="https://openreview.net/forum?id=vFcm5sOitq" target="_blank" rel="noopener noreferrer">OpenReview</a></div>
+</article>
+<article>
+  <h3><a href="https://openreview.net/forum?id=W4Pwb4SX3P" target="_blank" rel="noopener noreferrer">SynQuE：没有标注真实数据时，也要估计合成数据集质量</a></h3>
+  <p>SynQuE 正式定义 Synthetic Dataset Quality Estimation：只用少量无标注真实数据，排序多个合成数据集的预期真实任务表现。论文构建 benchmark，并把 distribution/diversity proxy 与 LLM reasoning proxy Lens 结合；在 Text2SQL 中，用 SynQuE 选出的 top-3 合成数据集训练可将准确率从 30.4% 提到 38.4%。</p>
+  <p><strong>为什么值得看：</strong>很多企业有少量真实日志但缺乏高质量标签，合成数据看似充足却不知道哪个集能提升真实任务。SynQuE 把这个问题从经验筛选变成可评测任务。</p>
+  <p><strong>对推荐系统的启发：</strong>可为推荐离线训练维护多个合成负例/用户模拟/会话数据集，并用少量无标注真实流量估计哪个数据集最可能改善真实排序，而不是把所有合成样本混在一起。</p>
+  <div class="label">引用：<a href="https://openreview.net/forum?id=W4Pwb4SX3P" target="_blank" rel="noopener noreferrer">OpenReview</a></div>
+</article>
+<article>
+  <h3><a href="https://openreview.net/forum?id=qvI35hkpOO" target="_blank" rel="noopener noreferrer">LLM-FE：把表格特征工程改写成 LLM 程序搜索</a></h3>
+  <p>LLM-FE 把自动特征工程视为 program search：LLM 迭代提出新的 feature transformation programs，数据驱动反馈引导演化搜索。OpenReview 页面显示该工作已被 TMLR 接收，作者称它能跨模型、任务和数据集超过现有 baseline。</p>
+  <p><strong>为什么值得看：</strong>在 tabular learning 里，固定搜索空间的 AutoFE 往往忽略领域知识；直接让 LLM 提特征又容易缺少实验记忆。LLM-FE 的关键是把 LLM 的领域知识放进可反馈、可迭代的程序搜索。</p>
+  <p><strong>对推荐系统的启发：</strong>推荐排序仍大量依赖表格和交叉特征；可以让 LLM 提议候选交叉、时间窗、行为聚合和归一化特征，但必须用离线验证反馈和复杂度约束控制搜索。</p>
+  <div class="label">引用：<a href="https://openreview.net/forum?id=qvI35hkpOO" target="_blank" rel="noopener noreferrer">OpenReview</a></div>
+</article>
+<article>
+  <h3><a href="https://arxiv.org/abs/2605.11231" target="_blank" rel="noopener noreferrer">LiBaGS：合成样本要补在真实支持内的决策边界缺口</a></h3>
+  <p>LiBaGS 是一个 generator-agnostic 的合成训练样本选择方法。它用决策边界接近度、预测不确定性、真实数据密度和 support validity 给候选样本打分，并通过 boundary-gap allocation 和 marginal-value stopping 决定补哪里、补多少，避免只增加样本数量或只挑最不确定样本。</p>
+  <p><strong>为什么值得看：</strong>它把合成数据的使用方式从“扩充数据集”改成“填补局部证据缺口”。这个视角对长尾类别、稀疏标签和不平衡数据更实用，也更容易做 ablation。</p>
+  <p><strong>对推荐系统的启发：</strong>推荐冷启动和长尾内容可以用 LiBaGS 式准则选择合成曝光、点击或偏好样本：靠近排序边界、真实日志覆盖不足、但仍在用户行为支持内的样本最值得补。</p>
+  <div class="label">引用：<a href="https://arxiv.org/abs/2605.11231" target="_blank" rel="noopener noreferrer">arXiv:2605.11231</a> / <a href="https://www.researchgate.net/publication/404798042_LiBaGS_Lightweight_Boundary_Gap_Synthesis_for_Targeted_Synthetic_Data_Selection" target="_blank" rel="noopener noreferrer">ResearchGate</a></div>
+</article></div>
+</section>
+<section id="ai_social_tools">
+  <h2>AI 社媒/工具/产品动态</h2>
+  <div class="trend"><p>今天工具和产品板块最值得注意的是 agent 产品化与安全边界同时出现：OpenAI super app 传闻、Lockdown Mode、Perplexity Search as Code、Datasette agent edit 和 MicroPython WASM sandbox 都在回答同一个实际问题，即 agent 能做更多事后，谁来限制它的网络访问、代码执行、编辑范围和搜索流程。证据来自 The Decoder、TechCrunch、Simon Willison 以及候选里的 HN/GitHub 信号；推荐系统研究者要关心这些工具，因为推荐实验 agent、数据分析 agent 和内容运营 agent 都会触碰同样的权限、注入和可回滚编辑问题。</p><ul><li>The Decoder 与 TechCrunch 都报道 OpenAI 仍在推进 ChatGPT 向 super app/agent app 转型，候选显示这条新闻在 6 月 7 日被多源覆盖。</li><li>Lockdown Mode 的产品逻辑是关闭 web access、Deep Research 和 Agent Mode 等能力，降低 prompt injection 数据外泄链路的最后一步。</li><li>Perplexity 的 Search as Code 把搜索流程交给模型生成 Python pipeline，而不是固定 API；这会提高可组合性，也会放大可审计和沙箱要求。</li><li>Simon Willison 的 Datasette agent edit 与 MicroPython/WASM sandbox 都围绕同一工程主题：让 agent 能改文本或跑代码时，必须把操作限制在可检查、可回滚、低权限环境里。</li><li>今天工具候选里的 GitHub 热门仓库很多是历史项目，日报只选有最近发布时间或明确新闻报道的条目。</li></ul></div>
+  <div class="cards"><article>
+  <h3><a href="https://the-decoder.com/openai-says-chat-is-dead-and-plans-to-rebuild-chatgpt-as-a-full-blown-agent-app/" target="_blank" rel="noopener noreferrer">OpenAI “chat is dead” 报道：ChatGPT 继续向 agent app 扩展</a></h3>
+  <p>The Decoder 报道称 OpenAI 内部将 ChatGPT 的下一步描述为超越聊天界面的 agent/super app，可能整合编码工具、AI agents 和 Canva、Booking.com 等合作应用。候选中 TechCrunch 也在 6 月 7 日报道 OpenAI 仍在推进 super app。</p>
+  <p><strong>为什么值得看：</strong>如果入口从聊天框变成任务型 agent app，产品竞争点会从模型回答质量转向工具生态、权限管理、工作流记忆和交易闭环。报道仍是媒体消息，需要等待 OpenAI 正式发布或开发者接口变化。</p>
+  <p><strong>对推荐系统的启发：</strong>推荐系统的用户入口也可能从 feed/搜索框转向任务 agent：系统需要推荐工具、候选动作和下一步工作流，而不只是推荐内容 item。</p>
+  <div class="label">引用：<a href="https://the-decoder.com/openai-says-chat-is-dead-and-plans-to-rebuild-chatgpt-as-a-full-blown-agent-app/" target="_blank" rel="noopener noreferrer">The Decoder</a> / <a href="https://techcrunch.com/2026/06/07/openai-is-still-working-on-that-super-app/" target="_blank" rel="noopener noreferrer">TechCrunch</a></div>
+</article>
+<article>
+  <h3><a href="https://the-decoder.com/chatgpts-new-lockdown-mode-lets-you-disable-web-access-and-more-to-protect-sensitive-data-from-prompt-injection/" target="_blank" rel="noopener noreferrer">ChatGPT Lockdown Mode：prompt injection 防护变成产品开关</a></h3>
+  <p>The Decoder 报道 ChatGPT 新的 Lockdown Mode 可关闭 web access、Deep Research 和 Agent Mode，以减少 prompt injection 攻击中把敏感数据外传的能力链路。报道也强调它不能完全阻止攻击，只是阻断部分外泄步骤。</p>
+  <p><strong>为什么值得看：</strong>这说明 agent 安全正在从抽象风险变成用户可操作的权限开关。对企业用户，重要的是按任务切换能力范围，而不是默认把浏览、文件和执行权限全开。</p>
+  <p><strong>对推荐系统的启发：</strong>推荐实验平台和数据分析 agent 也应提供类似模式：当处理用户画像、日志或广告数据时，默认禁用外部网络和高风险工具，只允许白名单内检索和内部计算。</p>
+  <div class="label">引用：<a href="https://the-decoder.com/chatgpts-new-lockdown-mode-lets-you-disable-web-access-and-more-to-protect-sensitive-data-from-prompt-injection/" target="_blank" rel="noopener noreferrer">The Decoder</a></div>
+</article>
+<article>
+  <h3><a href="https://the-decoder.com/perplexitys-search-as-code-lets-ai-models-write-their-own-search-pipelines-instead-of-calling-fixed-apis/" target="_blank" rel="noopener noreferrer">Perplexity Search as Code：让模型编写自己的搜索流水线</a></h3>
+  <p>The Decoder 报道 Perplexity 的 Search as Code 让模型用 Python 编写搜索流程，而不是只调用固定搜索 API。报道将其解释为 agent 自行组合查询、过滤、聚合和后处理步骤的搜索架构。</p>
+  <p><strong>为什么值得看：</strong>搜索从固定 API 变成可生成 pipeline 后，系统能力更灵活，但日志、复现、沙箱和成本控制也更重要。它会迫使搜索/推荐平台重新定义 agent 可以访问哪些数据和执行哪些代码。</p>
+  <p><strong>对推荐系统的启发：</strong>推荐检索可以借鉴“pipeline as code”的表达，让 agent 在白名单算子内组合召回源、过滤器和重排特征；同时保留可回放日志用于离线评估和故障追踪。</p>
+  <div class="label">引用：<a href="https://the-decoder.com/perplexitys-search-as-code-lets-ai-models-write-their-own-search-pipelines-instead-of-calling-fixed-apis/" target="_blank" rel="noopener noreferrer">The Decoder</a></div>
+</article>
+<article>
+  <h3><a href="https://simonwillison.net/2026/Jun/7/datasette-agent-edit/#atom-everything" target="_blank" rel="noopener noreferrer">datasette-agent-edit 0.1a0：agentic editing 开始进入数据库工具</a></h3>
+  <p>Simon Willison 发布 datasette-agent-edit 0.1a0，计划作为 Datasette Agent 的一组编辑插件之一，用于协作 Markdown、长 SQL 查询和 SVG 等文本编辑。文章重点讨论 agentic editing 难点，以及借鉴 Claude Code 的编辑设计。</p>
+  <p><strong>为什么值得看：</strong>agent 能读数据还不够，真正进入工作流时必须能安全地修改内容。编辑型 agent 的关键不是生成一段新文本，而是小步 diff、上下文定位、冲突处理和回滚。</p>
+  <p><strong>对推荐系统的启发：</strong>推荐系统运营后台可以让 agent 修改实验配置、规则或 SQL，但应采用 patch/diff 工作流和审批机制，避免一次性重写复杂策略。</p>
+  <div class="label">引用：<a href="https://simonwillison.net/2026/Jun/7/datasette-agent-edit/#atom-everything" target="_blank" rel="noopener noreferrer">Simon Willison</a></div>
+</article>
+<article>
+  <h3><a href="https://simonwillison.net/2026/Jun/6/micropython-in-a-sandbox/#atom-everything" target="_blank" rel="noopener noreferrer">MicroPython + WASM sandbox：给 agent 代码执行一个低权限边界</a></h3>
+  <p>Simon Willison 介绍用 MicroPython 和 WASM 运行 Python sandbox 的实验，并将其用于 Datasette Agent 的代码执行插件。目标是在浏览器环境提供限制能力的 Python 执行，不给 agent 任意访问主机系统的权限。</p>
+  <p><strong>为什么值得看：</strong>代码执行是数据 agent 的高价值能力，也是最危险的权限之一。MicroPython/WASM 路线提供了一个轻量、可分发、较易限制的执行环境，适合原型和受控数据处理。</p>
+  <p><strong>对推荐系统的启发：</strong>推荐分析 agent 可以在沙箱里运行特征统计、样本检查和小规模重排实验；但真实日志、用户画像和生产配置仍应通过权限代理和审计日志访问。</p>
+  <div class="label">引用：<a href="https://simonwillison.net/2026/Jun/6/micropython-in-a-sandbox/#atom-everything" target="_blank" rel="noopener noreferrer">Simon Willison</a></div>
+</article></div>
+</section>
+  </main>
+</body>
+</html>
