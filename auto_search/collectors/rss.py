@@ -22,13 +22,16 @@ def collect(source: Dict[str, Any], context: Dict[str, Any]) -> Tuple[List[Dict[
     items: List[Dict[str, Any]] = []
     lookback_start = context["lookback_start"]
     for feed in source.get("feeds") or []:
+        timeout = int(feed.get("timeout_seconds", source.get("timeout_seconds", 8)))
+        retries = int(feed.get("retries", source.get("retries", 1)))
         try:
             parsed = parse_feed(
                 http.request_text_cached(
                     feed["url"],
                     cache_dir=context["cache_dir"] / "rss",
                     cache_ttl_seconds=int(feed.get("cache_ttl_seconds", source.get("cache_ttl_seconds", 60 * 60))),
-                    retries=1,
+                    timeout=timeout,
+                    retries=retries,
                 ),
                 feed.get("name") or source.get("name", "rss"),
                 feed.get("source_type", source.get("source_type", "blog")),
