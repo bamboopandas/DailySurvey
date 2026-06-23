@@ -3,11 +3,15 @@ from __future__ import annotations
 import datetime as dt
 import hashlib
 import json
+import signal
+import threading
 import time
 import urllib.error
 import urllib.request
+from contextlib import contextmanager
 from pathlib import Path
-from typing import Any, Dict, Optional
+from types import FrameType
+from typing import Any, Dict, Iterator, Optional
 
 
 USER_AGENT = "auto-search/0.1 (+https://github.com/) research-brief-bot"
@@ -15,6 +19,34 @@ USER_AGENT = "auto-search/0.1 (+https://github.com/) research-brief-bot"
 
 class FetchError(RuntimeError):
     pass
+
+
+class _HardTimeout(TimeoutError):
+    pass
+
+
+@contextmanager
+def _request_deadline(timeout: int) -> Iterator[None]:
+    if threading.current_thread() is not threading.main_thread() or not hasattr(signal, "setitimer"):
+        yield
+        return
+
+    previous_handler = signal.getsignal(signal.SIGALRM)
+    previous_timer = signal.setitimer(signal.ITIMER_REAL, 0)
+    deadline = max(float(timeout) + 5.0, 1.0)
+
+    def _handle_timeout(signum: int, frame: Optional[FrameType]) -> None:
+        raise _HardTimeout(f"request exceeded {deadline:.1f}s deadline")
+
+    signal.signal(signal.SIGALRM, _handle_timeout)
+    signal.setitimer(signal.ITIMER_REAL, deadline)
+    try:
+        yield
+    finally:
+        signal.setitimer(signal.ITIMER_REAL, 0)
+        signal.signal(signal.SIGALRM, previous_handler)
+        if previous_timer[0] > 0:
+            signal.setitimer(signal.ITIMER_REAL, previous_timer[0], previous_timer[1])
 
 
 def request_text(
@@ -31,10 +63,11 @@ def request_text(
     for attempt in range(retries + 1):
         try:
             request = urllib.request.Request(url, headers=merged_headers)
-            with urllib.request.urlopen(request, timeout=timeout) as response:
-                charset = response.headers.get_content_charset() or "utf-8"
-                return response.read().decode(charset, errors="replace")
-        except (urllib.error.URLError, TimeoutError, OSError) as exc:
+            with _request_deadline(timeout):
+                with urllib.request.urlopen(request, timeout=timeout) as response:
+                    charset = response.headers.get_content_charset() or "utf-8"
+                    return response.read().decode(charset, errors="replace")
+        except (urllib.error.URLError, TimeoutError, OSError, _HardTimeout) as exc:
             last_error = exc
             if attempt < retries:
                 time.sleep(1.5 * (attempt + 1))
