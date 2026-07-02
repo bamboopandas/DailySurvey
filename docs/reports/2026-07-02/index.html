@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>每日 AI / 推荐系统情报简报 - 2026-07-02</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f7f8fa;
+      --panel: #ffffff;
+      --text: #15171a;
+      --muted: #5f6875;
+      --line: #dfe4ea;
+      --accent: #0f766e;
+    }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    main {
+      max-width: 1040px;
+      margin: 0 auto;
+      padding: 40px 20px 72px;
+    }
+    header {
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 28px;
+      padding-bottom: 24px;
+    }
+    h1 {
+      font-size: clamp(28px, 4vw, 44px);
+      line-height: 1.18;
+      margin: 0 0 8px;
+    }
+    .date, .muted {
+      color: var(--muted);
+    }
+    section {
+      margin-top: 28px;
+      padding-top: 8px;
+    }
+    h2 {
+      font-size: 24px;
+      margin: 0 0 12px;
+    }
+    .trend {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 18px 20px;
+    }
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 14px;
+      margin-top: 16px;
+    }
+    article {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 16px;
+    }
+    h3 {
+      font-size: 17px;
+      line-height: 1.35;
+      margin: 0 0 10px;
+    }
+    a {
+      color: var(--accent);
+      text-decoration-thickness: .08em;
+      text-underline-offset: .18em;
+    }
+    ul {
+      padding-left: 1.2em;
+    }
+    .label {
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <h1>每日 AI / 推荐系统情报简报</h1>
+      <div class="date">2026-07-02</div>
+      <p>今天最重要的新情况是，48 小时候选里推荐系统论文不再只讨论“把 LLM 接到排序后面”，而是同时进入搜索评估、agentic shopping、首页生成、重排奖励和召回训练。证据来自 Spotify 音乐搜索评估、Taobao agentic shopping、Netflix GenPage、工业级 GR2 重排和两塔召回 hard negative 几篇新稿，它们共同把行为日志、语义 ID、页面结构和可验证奖励放到同一条工程链路里。对推荐系统研究来说，直接影响是实验对象要从单点模型扩展到“候选可达性、页面/slate 生成、奖励可被钻空、评估是否贴近真实用户偏好”这些可测环节。LLM 与工具板块也给出相邻信号：agent 自改进、主动实验、能力蒸馏、上下文/记忆工程和企业部署正在变成推荐研发代理可复用的基础设施；本期未使用 manual 补源，Semantic Scholar 因未配置 API key 仍缺席，OpenReview 与部分 RSS 有局部失败，后续需继续观察源覆盖。</p>
+    </header>
+    <section id="recsys_research">
+  <h2>推荐系统研究</h2>
+  <div class="trend"><p>推荐系统板块今天真正值得注意的是，LLM 与生成式方法正在同时改写评估、召回、重排和页面构造，而不是只作为 reranker 附件出现。证据很密集：Spotify 用历史行为约束 LLM judge，Taobao 场景的 ShopX 让模型直接操作语义 ID 商品空间，Netflix GenPage 给出生产首页在线指标，GR2 把 RL 奖励风险摆到工业重排里，两塔论文则把 LLM 放回训练样本构造。读者要关心的是，这些工作把推荐实验的关键问题从“模型是否更大”推进到“行为证据是否可信、候选是否可达、页面是否可生成、奖励是否会被钻空”。</p><ul><li>Spotify 音乐搜索论文把历史用户互动压成 QRI cards，LLM judge 在 6000 个重组 SERP 上与用户偏好的 Spearman 相关整体提升约 5%。</li><li>ShopX 把 agentic shopping 的意图理解、执行规划和语义 ID 商品操作合并到 foundation model，评测任务来自匿名 Taobao 生产日志。</li><li>Netflix GenPage 报告用单个 transformer 生成多行首页，在线 A/B 中核心参与指标 +0.24%，端到端延迟降低 20%。</li><li>GR2 把语义 ID、teacher reasoning trace、RL 可验证奖励和 on-policy distillation 用于工业 re-ranking，并明确报告 reward hacking / position bias 风险。</li><li>两塔召回 hard negative 论文把 LLM 用在训练期同簇负样本构造，目标是提高样本难度、打破反馈循环和降低流行度偏置。</li></ul></div>
+  <div class="cards"><article>
+  <h3><a href="https://arxiv.org/abs/2607.01040v1" target="_blank" rel="noopener noreferrer">用历史用户偏好校准 LLM 搜索评估</a></h3>
+  <p>这篇 Spotify 音乐搜索论文提出 behavior-grounded LLM judge：给 SERP item 增加 Query-Relevance-Impressions 卡片，让模型在判断相关性时看到历史用户如何与相似 query 和结果互动。在 6000 个重组 SERP 上，方法使 Spearman 相关整体提升约 5%，在 disagreement cases 上相对提升 91%，五语种人评数据上相关性再提升 15%。</p>
+  <p><strong>为什么值得看：</strong>LLM-as-a-judge 正在进入搜索/推荐质量评估，但如果 judge 脱离真实行为，很容易在歧义 query 上给出漂亮却错误的判断。论文把“用户过去怎么选”变成可引用证据，并用 live A/B 结果验证 judge 与线上胜出模型的一致性。</p>
+  <p><strong>对推荐系统的启发：</strong>推荐评估可以把历史曝光、点击和相近 query 行为压成可审计的 judge 上下文，而不是只让 LLM 根据语义相似度打分；这也适合用于长尾、歧义和多语言推荐场景的离线评测校准。</p>
+  <div class="label">引用：<a href="https://arxiv.org/abs/2607.01040v1" target="_blank" rel="noopener noreferrer">arXiv</a></div>
+</article>
+<article>
+  <h3><a href="https://arxiv.org/abs/2606.31693v1" target="_blank" rel="noopener noreferrer">ShopX：面向 agentic shopping 的意图到商品模型</a></h3>
+  <p>ShopX 面向 agentic shopping，把意图理解、执行规划和语义 ID 原生的 item-space 操作合到一个 foundation model 中。它通过 model-facing action protocol 支持 SID beam-search retrieval、listwise ranking 和 product bundling，并在来自匿名 Taobao 生产日志的单轮/多轮 fulfillment 任务上与工具编排式 agent 对比。</p>
+  <p><strong>为什么值得看：</strong>购物推荐正在从“页面浏览 + 搜索框”转向“用户说目标，agent 帮忙完成”。ShopX 的看点不是又包一层 LLM，而是让模型直接操作商品空间，适合检验语义 ID、可组合召回和多轮推荐规划。</p>
+  <p><strong>对推荐系统的启发：</strong>电商推荐可以把复杂意图、多轮上下文和 item-space 操作统一到语义 ID 原生模型里，减少 agent 编排层到召回/排序接口之间的信息损失。</p>
+  <div class="label">引用：<a href="https://arxiv.org/abs/2606.31693v1" target="_blank" rel="noopener noreferrer">arXiv</a></div>
+</article>
+<article>
+  <h3><a href="https://arxiv.org/abs/2606.31031v1" target="_blank" rel="noopener noreferrer">GenPage：Netflix 的端到端生成式首页构造</a></h3>
+  <p>Netflix GenPage 把用户和请求上下文作为 prompt，用单个 transformer 自回归生成结构化、多行首页。论文报告 WBC 版本相对成熟生产首页推荐器带来核心参与指标 +0.24% 的在线提升，并将端到端服务延迟降低 20%。</p>
+  <p><strong>为什么值得看：</strong>这是推荐系统里少见的生产级页面生成结果：它不仅讨论模型形式，还处理 cold start、模型 freshness、业务规则和 serving efficiency。对做 slate recommendation 的团队，它提供了可对照的在线指标和工程约束。</p>
+  <p><strong>对推荐系统的启发：</strong>页面级推荐研究可以把业务规则、多样性、freshness、冷启动和延迟约束一起纳入生成式 slate/page construction，而不是只在 item 级别优化命中率。</p>
+  <div class="label">引用：<a href="https://arxiv.org/abs/2606.31031v1" target="_blank" rel="noopener noreferrer">arXiv</a></div>
+</article>
+<article>
+  <h3><a href="https://arxiv.org/abs/2606.31984v1" target="_blank" rel="noopener noreferrer">GR2：用语义 ID、推理轨迹和 RL 做工业重排</a></h3>
+  <p>GR2 是工业级 Generative Reasoning Re-Ranker，面向多阶段推荐漏斗中最靠近用户体验的 re-ranking。它结合语义 ID mid-training、teacher reasoning trace、带可验证奖励的 RL、context compressor 和 on-policy distillation，报告相对 legacy baseline 的 +18.7% R@1、+7.1% R@3、+9.6% N@3。</p>
+  <p><strong>为什么值得看：</strong>论文直接指出 LLM re-ranker 可能通过保留输入顺序或利用 position bias 来 hack reward。这个失败模式比指标提升更值得读，因为它提醒推荐 RL 需要把可验证奖励设计成生产系统的一等组件。</p>
+  <p><strong>对推荐系统的启发：</strong>用 RL 做重排时，奖励设计必须同时处理位置偏置、保序投机和可验证目标；语义 ID 与 reasoning distillation 也可用于把 LLM re-ranker 的线上成本压到可部署范围。</p>
+  <div class="label">引用：<a href="https://arxiv.org/abs/2606.31984v1" target="_blank" rel="noopener noreferrer">arXiv</a></div>
+</article>
+<article>
+  <h3><a href="https://arxiv.org/abs/2607.00448v1" target="_blank" rel="noopener noreferrer">用 LLM 聚类做实时 hard negative 采样</a></h3>
+  <p>这篇两塔召回论文针对工业训练中负样本过易的问题，提出用 LLM 学到的媒体表示做实时同簇 hard negative 采样。作者称该框架可无缝接入生产模型、处理数十亿训练样本，并在公开数据集和大型线上系统中优于常见工业采样方法，同时有助于打破反馈循环、降低流行度偏置。</p>
+  <p><strong>为什么值得看：</strong>今天几篇生成式推荐论文都假设候选空间能被有效触达，而这篇回到召回训练本身。它把 LLM 的价值放在训练样本构造上，不是推理时再加一个大模型，工程含义更直接。</p>
+  <p><strong>对推荐系统的启发：</strong>召回模型训练可以用 LLM 表征或聚类动态构造同簇 hard negatives，重点评估是否提高长尾覆盖、降低 popularity bias，并与 in-batch/out-of-batch negatives 做线上对照。</p>
+  <div class="label">引用：<a href="https://arxiv.org/abs/2607.00448v1" target="_blank" rel="noopener noreferrer">arXiv</a></div>
+</article></div>
+</section>
+<section id="llm_hotspots">
+  <h2>LLM 热点</h2>
+  <div class="trend"><p>LLM 板块今天的共同问题不是“模型又变强了”，而是 agent 和后训练如何从运行过程里拿到更可靠的学习信号。失败轨迹、自主演化搜索、主动实验、多教师 on-policy 蒸馏和元认知反馈分别回答了 trajectory reuse、探索、能力集成和不确定性校准。推荐系统读者要关心这些工作，因为推荐研发代理、交互式推荐和生成式重排都会遇到同样的长任务反馈稀疏、失败样本浪费、跨场景能力合并和输出可信度问题。</p><ul><li>computer-use agent 论文把失败轨迹用于推理期自改进，在 OSWorld 上将 OpenCUA-72B 成功率从 42.3% 提升到 48.9%。</li><li>Evolution Fine-Tuning 把 15.6 万条 evolutionary search 轨迹用于中训练，候选摘要报告 22 个 held-out optimization tasks 平均提升 10.22%。</li><li>HExA 在 Interphyre 工具调用物理基准上通过主动实验和技能库显著改善 agent 表现，候选摘要称 Claude Sonnet 4.6 从 2% 提升到最高 77%。</li><li>MOPD 将多个领域 RL teachers 蒸馏到 student 的 on-policy rollouts 上，目标是解决多能力后训练的互相干扰和 exposure bias。</li><li>RLMF 把模型自我判断质量转成 metacognitive feedback，用于更忠实地表达不确定性。</li></ul></div>
+  <div class="cards"><article>
+  <h3><a href="https://arxiv.org/abs/2606.31270v1" target="_blank" rel="noopener noreferrer">失败轨迹也能改进 computer-use agents</a></h3>
+  <p>这篇 ECCV 2026 论文提出 inference-time failure-driven self-improvement：不再丢弃失败轨迹，而是让 LLM 诊断失败模式、提出推理期方案并生成经轻量人工验证的代码补丁。作者在 OSWorld 上用 OpenCUA-72B 将成功率从 42.3% 提升到 48.9%，不增加训练成本，只带来适度推理开销。</p>
+  <p><strong>为什么值得看：</strong>agent 数据闭环过去常偏向成功样本，失败轨迹被当成噪音。论文把失败本身变成可操作监督，给长任务 agent 的低成本迭代提供了更现实的工程路径。</p>
+  <p><strong>对推荐系统的启发：</strong>推荐研发代理可以把失败轨迹转成诊断、补丁和评估用例，而不是只保留成功实验；这适合自动化推荐实验平台中的失败归因、特征修复和训练配置迭代。</p>
+  <div class="label">引用：<a href="https://arxiv.org/abs/2606.31270v1" target="_blank" rel="noopener noreferrer">arXiv</a></div>
+</article>
+<article>
+  <h3><a href="https://huggingface.co/papers/2606.29082" target="_blank" rel="noopener noreferrer">Evolution Fine-Tuning：让模型学习如何搜索和改进</a></h3>
+  <p>Evolution Fine-Tuning 把 evolutionary search 轨迹转成中训练监督，让 LLM 学会跨任务迭代改进方案。候选摘要称其构建 Finch Collection，包含 10 个领域、371 个优化任务和 15.6 万条轨迹；在 22 个 held-out tasks 上，相比 base models 平均提升 10.22%。</p>
+  <p><strong>为什么值得看：</strong>很多 agent 系统把搜索能力留在外部 scaffold 里，模型本身只负责生成候选。EFT 的新闻点在于把“如何 mutate、backtrack、继续尝试”的经验放进模型训练，可能影响科学发现、代码优化和复杂决策代理。</p>
+  <p><strong>对推荐系统的启发：</strong>推荐系统中的 slate 优化、候选组合、探索策略和多目标调参也可以被表述为跨任务搜索轨迹学习问题，关键是把历史搜索过程转成可迁移的训练数据，而不只保存最终最优解。</p>
+  <div class="label">引用：<a href="https://huggingface.co/papers/2606.29082" target="_blank" rel="noopener noreferrer">Hugging Face Daily Papers RSS</a></div>
+</article>
+<article>
+  <h3><a href="https://huggingface.co/papers/2606.29315" target="_blank" rel="noopener noreferrer">HExA：让 LLM agent 通过主动实验学习</a></h3>
+  <p>Hierarchical Experimentalist Agents（HExA）强调 agents 通过主动实验学习：迭代设计查询相关实验、从经验中学习可组合技能库，并把实验结果用于回答或行动。候选摘要显示，在 Interphyre 物理工具调用基准上，Claude Sonnet 4.6 单独只有 2% 成功率，HExA 可把同一模型提升到最高 77%。</p>
+  <p><strong>为什么值得看：</strong>这不是靠检索已知知识，而是在未知环境里主动试验并积累技能。对长任务 agent 来说，这把“实验设计”从人类工程流程推进成模型运行时能力。</p>
+  <p><strong>对推荐系统的启发：</strong>交互式推荐 agent 可以借鉴主动实验框架：让系统提出偏好澄清实验、观察反馈、沉淀可复用技能，再用于冷启动或复杂需求场景，而不是只依赖静态画像。</p>
+  <div class="label">引用：<a href="https://huggingface.co/papers/2606.29315" target="_blank" rel="noopener noreferrer">Hugging Face Daily Papers RSS</a></div>
+</article>
+<article>
+  <h3><a href="https://huggingface.co/papers/2606.30406" target="_blank" rel="noopener noreferrer">MOPD：多教师 on-policy 蒸馏集成 LLM 能力</a></h3>
+  <p>MOPD 提出 Multi-Teacher On-Policy Distillation：先训练多个领域专用 RL teachers，再在 student 自己的 rollouts 上蒸馏这些老师，以减少 exposure bias 并提供更密集的优化信号。候选摘要称它在 Qwen3-30B-A3B 上优于 Mix-RL、Cascade RL、Off-Policy Finetune 和 Param-Merge，并已用于 MiMo-V2-Flash 后训练。</p>
+  <p><strong>为什么值得看：</strong>能力整合是后训练的现实瓶颈：多个 domain teacher 各有专长，但简单混合会互相拉扯。MOPD 的价值在于把教师开发并行化，再用学生自身分布做蒸馏，贴近工业模型迭代方式。</p>
+  <p><strong>对推荐系统的启发：</strong>多域推荐模型也常遇到“不同场景老师各自强、统一模型集成困难”的问题；MOPD 的 on-policy 蒸馏思路可类比到搜索、广告、内容推荐之间的能力合并。</p>
+  <div class="label">引用：<a href="https://huggingface.co/papers/2606.30406" target="_blank" rel="noopener noreferrer">Hugging Face Daily Papers RSS</a></div>
+</article>
+<article>
+  <h3><a href="https://huggingface.co/papers/2606.32032" target="_blank" rel="noopener noreferrer">用元认知反馈训练 LLM 表达可信不确定性</a></h3>
+  <p>这篇论文用 metacognitive feedback 做强化学习，让模型根据自我判断质量来优化回答排序，并用类似信号选择高价值训练样本。候选摘要称 RLMF 在 faithful calibration 上保持准确率的同时取得泛化效果，并较标准 RL 最高提升 63%。</p>
+  <p><strong>为什么值得看：</strong>LLM 的高置信幻觉仍是部署阻力，尤其是 agent 要做长任务时。把不确定性表达作为 RL 信号，提供了比单纯拒答或后处理校准更主动的训练方向。</p>
+  <p><strong>对推荐系统的启发：</strong>推荐解释、实验结论生成和自动化分析都需要模型表达不确定性；可以把“模型是否知道自己何时不可靠”作为推荐研发 agent 的评测指标，而不只看答案命中。</p>
+  <div class="label">引用：<a href="https://huggingface.co/papers/2606.32032" target="_blank" rel="noopener noreferrer">Hugging Face Daily Papers RSS</a></div>
+</article></div>
+</section>
+<section id="data_centric_ai">
+  <h2>Data-centric AI</h2>
+  <div class="trend"><p>Data-centric AI 板块今天的主线很明确：合成数据不再只问“能不能生成”，而是问结构约束、困难样本、隐私风险和下游效用能否同时被控制。证据包括 NeMo DataDesigner 的工具化信号、AC3S 的 3D 自适应条件、TerraDiT-$Ω$ 的地理 primitive 控制、uncertainty-guided context augmentation 以及 TDGT 的表格 fidelity/privacy 评估。推荐系统读者要关心这些工作，因为冷启动、长尾、多模态 item、隐私日志共享和 hard negative 构造都会受益于“生成什么、保留什么、如何验收”的数据工程方法。</p><ul><li>NVIDIA NeMo DataDesigner 在候选中作为合成数据工具出现，强调从 seed data 或空白起点生成高质量数据。</li><li>AC3S 与 TerraDiT-$Ω$ 都把“可控生成”推进到结构约束层面，一个关注 3D/姿态一致性，一个支持多种地理 primitive。</li><li>Preserve the Hard, Regenerate the Rest 把不确定区域保留下来，只重生成上下文，避免合成像素破坏标签有效性。</li><li>TDGT 把表格合成数据的生成、GPU 加速、统计 fidelity 和隐私风险评估合成到 web 工具链。</li><li>今天的数据板块没有出现单一通用数据集新闻，主要信号集中在合成数据如何被控制、评估和工程化。</li></ul></div>
+  <div class="cards"><article>
+  <h3><a href="https://github.com/NVIDIA-NeMo/DataDesigner" target="_blank" rel="noopener noreferrer">NeMo DataDesigner：面向合成数据生成的工具</a></h3>
+  <p>NVIDIA NeMo DataDesigner 是一个用于从零或从 seed data 生成高质量合成数据的开源项目，候选中显示其 GitHub stars 为 2061、forks 为 193。它更像数据生产工具，而不是单篇算法论文。</p>
+  <p><strong>为什么值得看：</strong>合成数据正在从论文技巧变成可操作工程资产。对需要构造训练指令、偏好对、难负样本或安全评测集的团队，工具化数据设计会直接影响迭代速度和可复现性。</p>
+  <p><strong>对推荐系统的启发：</strong>推荐系统可以把 synthetic interaction、query rewrite、负样本解释和冷启动内容描述纳入可审计的数据生成流水线，并用离线 fidelity 与线上 A/B 分层验证数据收益。</p>
+  <div class="label">引用：<a href="https://github.com/NVIDIA-NeMo/DataDesigner" target="_blank" rel="noopener noreferrer">GitHub</a></div>
+</article>
+<article>
+  <h3><a href="https://arxiv.org/abs/2606.31204v1" target="_blank" rel="noopener noreferrer">AC3S：自适应条件控制的 3D 合成数据</a></h3>
+  <p>AC3S 面向 3D-aware synthetic data generation，用自监督 visual prompt modulator 动态调节 ControlNet conditioning 强度，试图同时保持 3D 结构/姿态一致性和图像真实感。它还使用多 agent VLM 框架生成与几何结构对齐的详细 prompt，并声称改善图像质量和下游任务效用。</p>
+  <p><strong>为什么值得看：</strong>很多合成数据失败在“标签和像素看似对齐、真实下游却不受益”。AC3S 把条件强度本身作为可调变量，提醒数据生成不能只追求控制，还要防止控制破坏分布真实性。</p>
+  <p><strong>对推荐系统的启发：</strong>多模态推荐的数据增强可以借鉴 adaptive conditioning：在保留结构约束的同时避免过度条件化，尤其适合商品图、房源图、短视频封面等结构敏感素材生成。</p>
+  <div class="label">引用：<a href="https://arxiv.org/abs/2606.31204v1" target="_blank" rel="noopener noreferrer">arXiv</a></div>
+</article>
+<article>
+  <h3><a href="https://arxiv.org/abs/2606.31029v1" target="_blank" rel="noopener noreferrer">TerraDiT-$Ω$：任意地理 primitive 控制的卫星图像合成</a></h3>
+  <p>TerraDiT-$Ω$ 让卫星图像合成直接接受 native geospatial primitives，包括 polygons、polylines、bounding boxes 和 points。论文通过 Geometry-Aware Local Attention 把显式几何线索注入 attention，并报告在 land-cover segmentation、object detection、road graph extraction 和 scene classification 等下游任务中提升表现。</p>
+  <p><strong>为什么值得看：</strong>它的价值不只是生成卫星图，而是把不同标注预算和不同几何表达统一到一个合成数据框架。数据中心研究者可以借此思考如何用低成本粗标注补足高成本精标注。</p>
+  <p><strong>对推荐系统的启发：</strong>位置服务、地图内容和本地生活推荐常有不同粒度空间信号；TerraDiT 的多 primitive 控制思路可迁移到把点、线、区域、POI 和用户轨迹统一进生成/增强数据。</p>
+  <div class="label">引用：<a href="https://arxiv.org/abs/2606.31029v1" target="_blank" rel="noopener noreferrer">arXiv</a></div>
+</article>
+<article>
+  <h3><a href="https://arxiv.org/abs/2606.31603v1" target="_blank" rel="noopener noreferrer">保留难例、重生成上下文的合成增强</a></h3>
+  <p>Preserve the Hard, Regenerate the Rest 用 baseline segmenter 的 predictive entropy 找到不确定语义区域，然后只 inpaint 互补视觉上下文；微调时只在原始像素上计算 loss，排除生成区域。作者在 Cityscapes、UAVID 和 BDD100K 上报告 mIoU 提升，尤其利好公交、火车、航拍汽车等稀有或困难类别。</p>
+  <p><strong>为什么值得看：</strong>这篇的关键是把合成数据预算花在“不确定但标签仍可信”的地方。它给数据增强提供了比全图重生成或粗暴前景替换更细的控制粒度。</p>
+  <p><strong>对推荐系统的启发：</strong>推荐数据增强也应优先保护高信息量样本：例如保留难例交互、罕见 item 或不确定用户片段，只重生成上下文，以减少合成数据把关键标签语义冲掉的风险。</p>
+  <div class="label">引用：<a href="https://arxiv.org/abs/2606.31603v1" target="_blank" rel="noopener noreferrer">arXiv</a></div>
+</article>
+<article>
+  <h3><a href="https://arxiv.org/abs/2606.31268v1" target="_blank" rel="noopener noreferrer">TDGT：表格合成数据生成与 fidelity 评估工具包</a></h3>
+  <p>TDGT 是一个面向合成表格数据的 web toolkit，支持自适应 Bayesian mixture、VAE-ABMS、GPU-accelerated ABMS 和 latent-space generative modeling。论文描述了 11 个统计 fidelity 指标以及 k-anonymity、disclosure rate 等隐私风险指标，并在医疗、社会经济和网络安全数据上评估。</p>
+  <p><strong>为什么值得看：</strong>表格数据是推荐与广告最常见的隐私敏感资产。TDGT 的意义在于把生成、可视化、fidelity 和隐私检查放进一个工具链，使数据共享和模拟实验更容易被审计。</p>
+  <p><strong>对推荐系统的启发：</strong>用户画像、广告特征和隐私敏感日志共享可以参考 TDGT 的 fidelity/privacy 双评估：合成数据不应只看下游效果，还要报告分布、相关性、样本相似度和披露风险。</p>
+  <div class="label">引用：<a href="https://arxiv.org/abs/2606.31268v1" target="_blank" rel="noopener noreferrer">arXiv</a></div>
+</article></div>
+</section>
+<section id="ai_social_tools">
+  <h2>AI 社会与工具</h2>
+  <div class="trend"><p>AI 工具/社会信号板块今天的重点是 agent 基础设施从“能调用工具”继续向 runtime、上下文、记忆和现场部署补课。GitHub 候选里 trpc-agent-go 覆盖生产 agent 系统的工作流、MCP、评测和可观测性，gptme 代表本地终端 agent，Ratel 与 mnemon 分别处理上下文压缩和跨会话记忆；TechCrunch 则给出 Amazon FDE 组织的企业落地信号。推荐系统团队要关心这些，因为下一阶段自动化推荐研发不仅要模型会写代码，还要能保存实验脉络、压缩日志上下文、接入工具链并在真实业务约束下交付。</p><ul><li>trpc-agent-go、gptme、Ratel 和 mnemon 都在 2026-07-02 前后有 GitHub 更新，候选信号集中在 agent runtime、终端自动化、上下文压缩和持久记忆。</li><li>Ratel 与 mnemon 分别把上下文压缩/检索和跨会话记忆做成基础组件，说明 agent 工具生态正在补长任务可靠性的短板。</li><li>gptme 把 agent 放回本地终端，适合代码、shell 和浏览器混合工作流，但也要求更严格的权限与回放机制。</li><li>TechCrunch 候选显示 Amazon 用 10 亿美元 FDE 组织推进企业 agents，表明 agent 落地正在从纯软件产品扩展到嵌入式工程服务。</li><li>与昨日偏 tracing、RAG context layer 和 demo 证据的工具栏相比，今天更突出 runtime、memory、context 和现场部署。</li></ul></div>
+  <div class="cards"><article>
+  <h3><a href="https://github.com/trpc-group/trpc-agent-go" target="_blank" rel="noopener noreferrer">trpc-agent-go：Go 生产 agent 框架</a></h3>
+  <p>trpc-agent-go 是一个 Go 语言 agent 框架，候选摘要强调 graph workflows、tools、memory、A2A、AG-UI、MCP、evaluation 和 observability。GitHub 指标显示 1473 stars、196 forks，并在 2026-07-02 有更新。</p>
+  <p><strong>为什么值得看：</strong>工具生态今天的一个现实问题是 agent 如何从 demo 变成生产工作流。trpc-agent-go 覆盖的不是单点能力，而是状态、工具、评测和可观测性这些部署前必须补齐的层。</p>
+  <p><strong>对推荐系统的启发：</strong>推荐团队若要把实验、查数、上线检查和监控串成 agent workflow，需要 graph workflows、工具调用、memory、evaluation 和 observability 这类运行时能力，而不只是一个聊天入口。</p>
+  <div class="label">引用：<a href="https://github.com/trpc-group/trpc-agent-go" target="_blank" rel="noopener noreferrer">GitHub</a></div>
+</article>
+<article>
+  <h3><a href="https://github.com/gptme/gptme" target="_blank" rel="noopener noreferrer">gptme：带本地工具的终端 agent</a></h3>
+  <p>gptme/gptme 把 agent 放在终端里，提供本地工具、代码编写、终端操作和网页浏览能力。候选显示它有 4346 stars、392 forks，并在 2026-07-02 更新。</p>
+  <p><strong>为什么值得看：</strong>与托管式 agent 平台不同，终端 agent 更接近研究者日常工作流。它说明“agent for research”可能先从可控本地自动化开始，而不是从全托管平台直接替代研发流程。</p>
+  <p><strong>对推荐系统的启发：</strong>本地终端 agent 可作为推荐研究的轻量实验助手：读日志、改配置、跑 ablation、生成报告，但前提是权限边界、可回放日志和环境隔离要先设计好。</p>
+  <div class="label">引用：<a href="https://github.com/gptme/gptme" target="_blank" rel="noopener noreferrer">GitHub</a></div>
+</article>
+<article>
+  <h3><a href="https://github.com/ratel-ai/ratel" target="_blank" rel="noopener noreferrer">Ratel：面向 agent 的上下文工程与 BM25 记忆</a></h3>
+  <p>ratel-ai/ratel 主打 context engineering for AI agents，候选摘要称可减少约 80% tokens，缓解 tool overload，并用 in-process BM25 retrieval 管理 skills 和 memory，不依赖向量库或 embeddings。候选显示 146 stars、9 forks，且未在近期自动化记忆中覆盖。</p>
+  <p><strong>为什么值得看：</strong>agent 失败常不是模型不会推理，而是上下文塞得太乱。Ratel 代表的工程方向是把上下文管理做成一层可替换基础设施，降低长任务成本和噪音。</p>
+  <p><strong>对推荐系统的启发：</strong>推荐研发 agent 常需要读取超长日志、实验结果和特征文档；上下文压缩与 BM25 技能/记忆检索可以减少 token 成本，并让 agent 更少被无关工具输出淹没。</p>
+  <div class="label">引用：<a href="https://github.com/ratel-ai/ratel" target="_blank" rel="noopener noreferrer">GitHub</a></div>
+</article>
+<article>
+  <h3><a href="https://github.com/mnemon-dev/mnemon" target="_blank" rel="noopener noreferrer">mnemon：面向 CLI agents 的持久化图记忆</a></h3>
+  <p>mnemon-dev/mnemon 是一个 LLM-supervised persistent memory 项目，候选摘要称其支持 graph-based recall、cross-session knowledge，并以 single binary 形式适配 Claude Code、OpenClaw 和 CLI agents。候选显示 370 stars、54 forks，2026-07-02 更新。</p>
+  <p><strong>为什么值得看：</strong>多轮 agent 如果没有可治理的长期记忆，很容易重复犯错或遗忘项目约束。mnemon 的看点在于把跨会话知识做成可部署组件，适合跟代码代理和实验代理结合。</p>
+  <p><strong>对推荐系统的启发：</strong>跨会话实验记忆对推荐研究很关键：哪些负采样策略失败过、哪些指标不可信、哪些数据切分有坑，都需要从单次对话沉淀成可检索知识。</p>
+  <div class="label">引用：<a href="https://github.com/mnemon-dev/mnemon" target="_blank" rel="noopener noreferrer">GitHub</a></div>
+</article>
+<article>
+  <h3><a href="https://techcrunch.com/2026/06/30/amazon-launches-new-1-billion-fde-org-following-openai-and-anthropic/" target="_blank" rel="noopener noreferrer">Amazon 推出 10 亿美元 FDE 组织部署企业 agents</a></h3>
+  <p>TechCrunch AI 候选称 Amazon 推出 10 亿美元 FDE 组织，工程师将嵌入企业内部部署 purpose-built agents，目标是快速部署并帮助客户自给自足。该条不是开源工具，而是企业 agent 落地组织形态的产品/市场信号。</p>
+  <p><strong>为什么值得看：</strong>agent 从工具走向生产时，难点常在客户流程、数据接入和可维护性。Amazon 跟进 FDE 模式说明企业 agent 竞争不只拼模型 API，还拼能否把工程师派到业务现场完成部署闭环。</p>
+  <p><strong>对推荐系统的启发：</strong>推荐系统的 agent 化落地可能需要 field engineering：把模型、数据权限、业务目标、评估和客户流程一起嵌入场景，而不是只交付 API 或通用平台。</p>
+  <div class="label">引用：<a href="https://techcrunch.com/2026/06/30/amazon-launches-new-1-billion-fde-org-following-openai-and-anthropic/" target="_blank" rel="noopener noreferrer">TechCrunch AI</a></div>
+</article></div>
+</section>
+  </main>
+</body>
+</html>
